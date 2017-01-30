@@ -1,8 +1,15 @@
 {
-    "name": "krak/container",
-    "description": "Container library designed inspired by pimple",
+    "name": "krak/cargo",
+    "description": "Small yet Powerful container library inspired by pimple",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+       "container",
+       "service",
+       "di",
+       "pimple",
+       "container-interop"
+   ],
     "authors": [
         {
             "name": "RJ Garcia",
