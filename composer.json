@@ -1,0 +1,24 @@
+{
+    "name": "krak/container",
+    "description": "Container library designed inspired by pimple",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RJ Garcia",
+            "email": "rj@bighead.net"
+        }
+    ],
+    "require-dev": {
+        "container-interop/container-interop": "^1.1",
+        "peridot-php/peridot": "^1.18",
+        "pimple/pimple": "^3.0",
+        "symfony/var-dumper": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Krak\\Cargo\\": "src"
+        },
+        "files": ["src/box-factory.php", "src/cargo.php"]
+    }
+}
