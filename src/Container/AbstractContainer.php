@@ -20,9 +20,11 @@ abstract class AbstractContainer implements Cargo\Container
     public function singleton($id, $factory) {
         return Cargo\singleton($this, $id, $factory);
     }
-
     public function fill(array $values) {
         return Cargo\fill($this, $values);
+    }
+    public function alias($id, ...$aliases) {
+        return Cargo\alias($this, $id, ...$aliases);
     }
 
     public function toPimple() {

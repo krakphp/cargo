@@ -23,7 +23,7 @@ function toInterop(Container $c) {
 
 /** returns the default container */
 function container(array $values = []) {
-    $c = new FreezingContainer(new BoxContainer());
+    $c = new Container\FreezingContainer(new Container\BoxContainer());
     $c->fill($values);
     return $c;
 }

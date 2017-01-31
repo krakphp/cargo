@@ -69,6 +69,8 @@ $interop = Cargo\toInterop($c); // or $c->toInterop
 
 ## Cargo Design
 
+
+
 ### Container Interface for Decoration
 
 To do...
@@ -76,3 +78,7 @@ To do...
 ### Boxes
 
 To do...
+
+## API
+
+### function alias($id, ...$aliases)

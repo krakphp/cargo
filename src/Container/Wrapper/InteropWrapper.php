@@ -5,7 +5,7 @@ namespace Krak\Cargo\Container\Wrapper;
 use Krak\Cargo,
     Interop\Container;
 
-class InteropContainer implements ContainerInterface
+class InteropWrapper implements ContainerInterface
 {
     private $container;
 

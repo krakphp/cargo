@@ -38,13 +38,21 @@ function wrap(Container $container, $id, $wrapper) {
         $wrapper
     ));
 }
+
 function protect(Container $container, $id, $value) {
     return $container->add($id, new Box\ValueBox($value));
 }
+
 function factory(Container $container, $id, $factory) {
     return $container->add($id, new Box\LazyBox($factory));
 }
 
 function singleton(Container $container, $id, $factory) {
     return $container->add($id, new Box\LazySingletonBox($factory));
+}
+
+function alias(Container $container, $id, ...$aliases) {
+    foreach ($aliases as $alias) {
+        $container->add($alias, $container->box($id));
+    }
 }

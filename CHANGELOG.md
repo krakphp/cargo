@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Bug within `container` creation function
+- Bug for `InteropWrapper`
+
+### Added
+
+- `alias` for aliasing boxes
+
 ## [0.1.0] - 2017-01-29
 ### Added
 
