@@ -26,6 +26,9 @@ abstract class AbstractContainer implements Cargo\Container
     public function alias($id, ...$aliases) {
         return Cargo\alias($this, $id, ...$aliases);
     }
+    public function env($var_name, $id = null) {
+        return Cargo\env($this, $var_name, $id);
+    }
 
     public function toPimple() {
         return Cargo\toPimple($this);

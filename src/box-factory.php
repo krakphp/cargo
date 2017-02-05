@@ -56,3 +56,7 @@ function alias(Container $container, $id, ...$aliases) {
         $container->add($alias, $container->box($id));
     }
 }
+
+function env(Container $container, $var_name, $id = null) {
+    return $container->add($id ?: $var_name, new Box\EnvBox($var_name));
+}

@@ -69,8 +69,6 @@ $interop = Cargo\toInterop($c); // or $c->toInterop
 
 ## Cargo Design
 
-
-
 ### Container Interface for Decoration
 
 To do...
@@ -81,4 +79,11 @@ To do...
 
 ## API
 
-### function alias($id, ...$aliases)
+### function alias(Container $c, $id, ...$aliases)
+
+Aliases an entry `$id` into `$aliases` for the container `$c`. Each alias will share the same box reference as the original entry.
+
+### function env(Container $c, $var_name, $id = null)
+
+Adds an EnvBox entry into the container `$c` with `$var_name` being the name of the env var and `$id` is the entry name.
+If `$id` is left null, then it will default to `$var_name`.
