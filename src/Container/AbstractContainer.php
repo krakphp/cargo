@@ -7,17 +7,18 @@ use Krak\Cargo;
 abstract class AbstractContainer implements Cargo\Container
 {
     use ArrayAccessTrait;
+    use CountableTrait;
 
     public function wrap($id, $wrapper) {
         return Cargo\wrap($this, $id, $wrapper);
     }
     public function protect($id, $value) {
-        return Cargo\protect($id, $value);
+        return Cargo\protect($this, $id, $value);
     }
-    public function factory($id, $factory) {
+    public function factory($id, $factory = null) {
         return Cargo\factory($this, $id, $factory);
     }
-    public function singleton($id, $factory) {
+    public function singleton($id, $factory = null) {
         return Cargo\singleton($this, $id, $factory);
     }
     public function fill(array $values) {
@@ -45,7 +46,7 @@ abstract class AbstractContainer implements Cargo\Container
     abstract public function get($id, Cargo\Container $container = null);
     abstract public function has($id);
     abstract public function remove($id);
-    abstract public function add($id, $box = null);
+    abstract public function add($id, $box, array $opts = []);
     /** get the box for this service */
     abstract public function box($id);
     abstract public function keys();

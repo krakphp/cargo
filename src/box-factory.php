@@ -2,29 +2,18 @@
 
 namespace Krak\Cargo;
 
-/** default to singleton boxes on closures */
-function cachedBoxFactory() {
-    return function($box) {
-        if ($box instanceof Box) {
-            return $box;
-        } else if ($box instanceof \Closure) {
-            return new Box\CachedBox(new Box\LazyBox($box));
-        } else {
-            return new Box\ValueBox($box);
-        }
-    };
-}
+use Krak\Arr;
 
-/** default to factories for boxes on closures */
-function factoryBoxFactory() {
-    return function($box) {
-        if ($box instanceof Box) {
-            return $box;
-        } else if ($box instanceof \Closure) {
-            return new Box\LazyBox($box);
-        } else {
-            return new Box\ValueBox($box);
+/** Default box factory that will construct a box appropriately from the options and it's value */
+function stdBoxFactory() {
+    return function($box, array $opts = []) {
+        if ($box instanceof \Closure) {
+            $box = new Box\LazyBox($box);
+        } else if (!$box instanceof Box) {
+            $box = new Box\ValueBox($box);
         }
+
+        return $box;
     };
 }
 
@@ -36,24 +25,24 @@ function wrap(Container $container, $id, $wrapper) {
     return $container->add($id, new Box\WrappedBox(
         $container->box($id),
         $wrapper
-    ));
+    ), ['wrapped' => true]);
 }
 
 function protect(Container $container, $id, $value) {
     return $container->add($id, new Box\ValueBox($value));
 }
 
-function factory(Container $container, $id, $factory) {
-    return $container->add($id, new Box\LazyBox($factory));
+function factory(Container $container, $id, $factory = null) {
+    return $container->add($id, $factory, ['singleton' => false]);
 }
 
-function singleton(Container $container, $id, $factory) {
-    return $container->add($id, new Box\LazySingletonBox($factory));
+function singleton(Container $container, $id, $factory = null) {
+    return $container->add($id, $factory, ['singleton' => true]);
 }
 
 function alias(Container $container, $id, ...$aliases) {
     foreach ($aliases as $alias) {
-        $container->add($alias, $container->box($id));
+        $container->add($alias, null, ['alias' => true, 'alias_of' => $id]);
     }
 }
 
