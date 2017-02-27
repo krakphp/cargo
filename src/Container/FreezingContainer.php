@@ -34,12 +34,12 @@ class FreezingContainer extends AbstractContainer
     public function remove($id) {
         return $this->container->remove($id);
     }
-    public function add($id, $box = null) {
+    public function add($id, $box, array $opts = []) {
         if (array_key_exists($id, $this->frozen)) {
-            throw new \RuntimeException("Cannot redefine already frozen service '$id'");
+            throw new Cargo\Exception\ContainerException("Cannot redefine already frozen service '$id'");
         }
 
-        return $this->container->add($id, $box);
+        return $this->container->add($id, $box, $opts);
     }
     public function box($id) {
         return $this->container->box($id);

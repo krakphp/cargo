@@ -7,16 +7,16 @@ use Krak\Cargo;
 class BoxContainer extends AbstractContainer
 {
     private $boxes;
-    private $box_factory;
+    private $aliases;
 
-    public function __construct($box_factory = null) {
+    public function __construct() {
         $this->boxes = [];
-        $this->box_factory = $box_factory ?: Cargo\cachedBoxFactory();
+        $this->aliases = [];
     }
 
     public function get($id, Cargo\Container $container = null) {
         if (!$this->has($id)) {
-            throw new \RuntimeException("Service '$id' was not previously defined.");
+            throw new Cargo\Exception\NotFoundException("Service '$id' was not previously defined.");
         }
 
         return $this->boxes[$id]->unbox($container ?: $this);
@@ -27,14 +27,16 @@ class BoxContainer extends AbstractContainer
     public function remove($id) {
         unset($this->boxes[$id]);
     }
-    public function add($id, $box = null) {
-        $box_factory = $this->box_factory;
-        $this->boxes[$id] = $box_factory($box);
+    public function add($id, $box, array $opts = []) {
+        if (!$box instanceof Cargo\Box) {
+            throw new Cargo\Exception\ContainerException('$box must be an instance of Krak\Cargo\Box');
+        }
+        $this->boxes[$id] = $box;
     }
     /** get the box for this service */
     public function box($id) {
         if (!$this->has($id)) {
-            throw new \RuntimeException("Box '$id' was not defined.");
+            throw new Cargo\Exception\NotFoundException("Box '$id' was not defined.");
         }
 
         return $this->boxes[$id];

@@ -22,8 +22,15 @@ function toInterop(Container $c) {
 }
 
 /** returns the default container */
-function container(array $values = []) {
-    $c = new Container\FreezingContainer(new Container\BoxContainer());
+function container(array $values = [], $auto_wire = false) {
+    $c = new Container\BoxContainer();
+    $c = new Container\SingletonContainer($c);
+    $c = new Container\BoxFactoryContainer($c);
+    $c = new Container\FreezingContainer($c);
+    if ($auto_wire) {
+        $c = new Container\AutoWireContainer($c);
+    }
+    $c = new Container\AliasContainer($c);
     $c->fill($values);
     return $c;
 }
