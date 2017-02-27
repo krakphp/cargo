@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2017-02-27
+
+### Changed
+
+- Container interface to allow for greater extendability
+- Simplified the BoxContainer and split functionality into several Containers: AliasContainer, BoxFactoryContainer, FreezingContainer,
+SingletonContainer
+- Updated the interop wrapper to use the Psr Container
+
 ### Fixed
 
 - Bug within `container` creation function
@@ -15,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - `alias` for aliasing boxes
 - `env` for accessing values from the env
+- Added a new countable trait
+- Added more and more tests
 
 ## [0.1.0] - 2017-01-29
 ### Added
