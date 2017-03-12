@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.1] - 2017-03-11
 ### Added
 
 - `Container\ContainerDecorator` to help with creating container decorators.
