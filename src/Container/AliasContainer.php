@@ -7,12 +7,12 @@ use Krak\Cargo,
 
 /** Freezes a service definition after it's been used preventing an override of that
     service */
-class AliasContainer extends AbstractContainer
+class AliasContainer extends ContainerDecorator
 {
     private $aliases;
 
     public function __construct(Cargo\Container $container) {
-        $this->container = $container;
+        parent::__construct($container);
         $this->aliases = [];
     }
 

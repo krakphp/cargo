@@ -6,14 +6,13 @@ use Krak\Arr,
     Krak\Cargo,
     SplObjectStorage;
 
-class SingletonContainer extends AbstractContainer
+class SingletonContainer extends ContainerDecorator
 {
-    private $container;
     private $default_singleton;
     private $cache;
 
     public function __construct(Cargo\Container $container, $default_singleton = true) {
-        $this->container = $container;
+        parent::__construct($container);
         $this->default_singleton = $default_singleton;
         $this->cache = new SplObjectStorage();
     }
@@ -36,9 +35,6 @@ class SingletonContainer extends AbstractContainer
         $this->cache[$box] = $res;
         return $res;
     }
-    public function has($id) {
-        return $this->container->has($id);
-    }
     public function remove($id) {
         $box = $this->box($id);
         $this->cache->detach($box);
@@ -59,12 +55,6 @@ class SingletonContainer extends AbstractContainer
         }
 
         return $this->container->add($id, $box, $opts);
-    }
-    public function box($id) {
-        return $this->container->box($id);
-    }
-    public function keys() {
-        return $this->container->keys();
     }
 
     private function maybeStoreWrappedBox($id, $box) {

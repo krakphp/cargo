@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+
+- `Container\ContainerDecorator` to help with creating container decorators.
+- `Container\AuxillaryMethodsTrait` to implement all of the auxillary methods
+  in an object oriented manner.
+
+### Changed
+
+- Updated all of the container decorators to use the `ContainerDecorator` class
 
 ## [0.2.0] - 2017-02-27
 

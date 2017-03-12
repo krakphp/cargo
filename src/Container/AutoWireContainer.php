@@ -5,12 +5,12 @@ namespace Krak\Cargo\Container;
 use Krak\Cargo,
     Krak\AutoArgs;
 
-class AutoWireContainer extends AbstractContainer
+class AutoWireContainer extends ContainerDecorator
 {
-    private $container;
+    private $auto_args;
 
     public function __construct(Cargo\Container $container, AutoArgs\AutoArgs $auto_args = null) {
-        $this->container = $container;
+        parent::__construct($container);
         $this->auto_args = $auto_args ?: new AutoArgs\AutoArgs();
     }
 
@@ -32,20 +32,11 @@ class AutoWireContainer extends AbstractContainer
 
         return class_exists($id);
     }
-    public function remove($id) {
-        return $this->container->remove($id);
-    }
     public function add($id, $box, array $opts = []) {
         if ($box === null && class_exists($id)) {
             $box = new Cargo\Box\AutoWireBox($this->auto_args, $id);
         }
 
         return $this->container->add($id, $box, $opts);
-    }
-    public function box($id) {
-        return $this->container->box($id);
-    }
-    public function keys() {
-        return $this->container->keys();
     }
 }
