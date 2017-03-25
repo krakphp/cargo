@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- ability to wrap aliased services #2
+
 ## [0.2.1] - 2017-03-11
 ### Added
 

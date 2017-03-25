@@ -86,6 +86,12 @@ describe('AliasContainer', function() {
         $this->c->remove('a');
         assert(count($this->c) == 0);
     });
+    it('allows you to wrap aliased services', function() {
+        $this->c->wrap('b', function() {
+            return 2;
+        });
+        assert($this->c['a'] == $this->c['b'] && $this->c['a'] == 2);
+    });
 });
 describe('SingletonContainer', function() {
     beforeEach(function() {
