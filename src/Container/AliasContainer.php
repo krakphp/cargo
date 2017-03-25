@@ -49,7 +49,7 @@ class AliasContainer extends ContainerDecorator
             return;
         }
 
-        return $this->container->add($id, $box, $opts);
+        return $this->container->add($this->resolveId($id), $box, $opts);
     }
     public function box($id) {
         return $this->container->box($this->resolveId($id));
