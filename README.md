@@ -162,6 +162,15 @@ $c->factory('StdClass');
 // $c['StdClass'] !== $c['StdClass']
 ```
 
+In addition, you can bind any class to be auto wired:
+
+```php
+$c->singleton('a', SplStack::class);
+$c->factory('b', ArrayObject::class);
+```
+
+`a` and `b` will resolve to their respective classes. This only works on singleton/factory entries, else it'll just treat the service like a string value and won't try to auto-resolve it.
+
 ### Service Providers
 
 `Cargo\ServiceProvider` provides a simple interface for defining multiple related services.

@@ -35,6 +35,8 @@ class AutoWireContainer extends ContainerDecorator
     public function add($id, $box, array $opts = []) {
         if ($box === null && class_exists($id)) {
             $box = new Cargo\Box\AutoWireBox($this->auto_args, $id);
+        } else if ($box && is_string($box) && class_exists($box) && isset($opts['singleton'])) {
+            $box = new Cargo\Box\AutoWireBox($this->auto_args, $box);
         }
 
         return $this->container->add($id, $box, $opts);

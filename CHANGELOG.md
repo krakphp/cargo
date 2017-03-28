@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Ability to bind classes to entries to be auto resolved.
+
 ## [0.2.2] - 2017-03-27
 
 ### Added
