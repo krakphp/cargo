@@ -14,15 +14,7 @@ class InteropWrapper implements Container\ContainerInterface
     }
 
     public function get($id) {
-        if (!$this->container->has($id)) {
-            throw new Container\Exception\NotFoundException("No entry was found for '$id'");
-        }
-
-        try {
-            return $this->container->get($id);
-        } catch (\Exception $e) {
-            throw new Container\Exception\ContainerException($e->getMessage());
-        }
+        return $this->container->get($id);
     }
 
     public function has($id) {
