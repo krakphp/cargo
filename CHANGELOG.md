@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.2] - 2017-03-27
+
 ### Added
 
 - Better error messages for auto-wire resolution issues #3
