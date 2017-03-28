@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Better error messages for auto-wire resolution issues #3
+
 ### Fixed
 
-- ability to wrap aliased services #2
+- Ability to wrap aliased services #2
+- Bug in InteropWrapper which incorrectly would convert all exceptions into container exceptions.
 
 ## [0.2.1] - 2017-03-11
 ### Added
