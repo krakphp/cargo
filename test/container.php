@@ -204,6 +204,10 @@ describe('AutoWireContainer', function() {
         $res = $this->c['a'];
         assert($res instanceof ServiceA && $res === $this->c[ServiceA::class]);
     });
+    it('binds classes to keys', function() {
+        $this->c->singleton('a', ServiceA::class);
+        assert($this->c['a'] instanceof ServiceA && $this->c['a'] === $this->c['a']);
+    });
 });
 describe('FreezingContainer', function() {
     beforeEach(function() {
