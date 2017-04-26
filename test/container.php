@@ -231,6 +231,29 @@ describe('FreezingContainer', function() {
         }
     });
 });
+describe('ArrayAccessDelegateContainer', function() {
+    it('allows failed looks ups to check a delegate container', function() {
+        $pimple = new Pimple\Container();
+        $pimple['a'] = 1;
+        $pimple['b'] = 2;
+        $c = Cargo\liteContainer();
+        $c = new Cargo\Container\ArrayAccessDelegateContainer($c, $pimple);
+        $c['b'] = 1;
+
+        assert($c['a'] === 1 && $c['b'] == 1 && !isset($c['c']));
+    });
+});
+describe('PsrDelegateContainer', function() {
+    $psr = Cargo\liteContainer([
+        'a' => 1,
+        'b' => 2,
+    ])->toInterop();
+    $c = Cargo\liteContainer();
+    $c = new Cargo\Container\PsrDelegateContainer($c, $psr);
+    $c['b'] = 1;
+
+    assert($c['a'] === 1 && $c['b'] == 1 && !isset($c['c']));
+});
 describe('env', function() {
     it('grabs values from the environment', function() {
         $c = Cargo\container();

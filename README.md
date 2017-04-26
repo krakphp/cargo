@@ -15,6 +15,8 @@ Install with composer at `krak/cargo`
 There are several ways to create cargo containers. The easiest way is to just create the default container like so:
 
 ```php
+<?php
+
 use Krak\Cargo;
 
 $c = Cargo\container();
@@ -31,6 +33,16 @@ $c = new Container\AliasContainer($c);
 ```
 
 Cargo is designed to be extendable and flexible, so each container decorator adds a feature that can be removed if not desired.
+
+If you want just a bare bones container, you can use the following:
+
+```php
+<?php
+
+$c = Cargo\liteContainer($values = [], $box_container = null);
+```
+
+This just implements the Box and BoxFactory container which caches services as singletons by default.
 
 ### Defining Services
 
@@ -213,6 +225,25 @@ $pimple['b'] = $pimple->protect(function() {
 
 // $c has access to all services defined in pimple
 $c['b'];
+```
+
+### Delegate Containers
+
+In an effort to provide better integration with other containers, we provide delegate containers to allow you to default to a cargo definitions, but fallback to the delegate container.
+
+`ArrayAccessDelegateContainer` and `PsrDelegateContainer` both act as delegate containers. The first will accept any array or `ArrayAccess` object (like Pimple), and the other will accept any Psr Container.
+
+```php
+<?php
+
+$pimple = new Pimple\Container();
+$pimple['a'] = 1;
+$pimple['b'] = 1;
+$c = Cargo\container();
+$c = new Cargo\Container\ArrayAccessDelegateContainer($c, $pimple);
+$c['b'] = 2;
+
+assert($c['b'] == 2 && $c['a'] == 1);
 ```
 
 ## Cargo Design
