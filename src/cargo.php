@@ -34,3 +34,11 @@ function container(array $values = [], $auto_wire = false) {
     $c->fill($values);
     return $c;
 }
+
+/** simple storage container without any awesome features. Use this if you want something lightweight (great for testing). */
+function liteContainer(array $values = [], $box_factory = null) {
+    $c = new Container\BoxContainer();
+    $c = new Container\BoxFactoryContainer($c, $box_factory ?: cachingBoxFactory());
+    $c->fill($values);
+    return $c;
+}

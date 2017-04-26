@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Delegate Containers #9
+- cachingBoxFactory which will by default cache lazy boxes
+- liteContainer for a lightweight container for testing
+
 ## [0.2.3] - 2017-03-28
 
 ### Added

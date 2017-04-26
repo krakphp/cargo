@@ -17,6 +17,20 @@ function stdBoxFactory() {
     };
 }
 
+/** Similar to the std box factory, this one will automatically cache services */
+function cachingBoxFactory() {
+    return function($box, array $opts = []) {
+        if ($box instanceof \Closure) {
+            $box = new Box\LazyBox($box);
+            $box = new Box\CachedBox($box);
+        } else if (!$box instanceof Box) {
+            $box = new Box\ValueBox($box);
+        }
+
+        return $box;
+    };
+}
+
 function wrap(Container $container, $id, $wrapper) {
     if (!$container->has($id)) {
         throw new \RuntimeException("Service '$id' has not been defined.");
