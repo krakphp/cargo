@@ -1,10 +1,6 @@
 # Change Log
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
-
-## [Unreleased]
+## Unreleased
 
 ### Added
 
@@ -12,13 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - cachingBoxFactory which will by default cache lazy boxes
 - liteContainer for a lightweight container for testing
 
-## [0.2.3] - 2017-03-28
+## 0.2.3 - 2017-03-28
 
 ### Added
 
 - Ability to bind classes to entries to be auto resolved.
 
-## [0.2.2] - 2017-03-27
+## 0.2.2 - 2017-03-27
 
 ### Added
 
@@ -29,7 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to wrap aliased services #2
 - Bug in InteropWrapper which incorrectly would convert all exceptions into container exceptions.
 
-## [0.2.1] - 2017-03-11
+## 0.2.1 - 2017-03-11
+
 ### Added
 
 - `Container\ContainerDecorator` to help with creating container decorators.
@@ -40,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Updated all of the container decorators to use the `ContainerDecorator` class
 
-## [0.2.0] - 2017-02-27
+## 0.2.0 - 2017-02-27
 
 ### Changed
 
@@ -61,7 +58,8 @@ SingletonContainer
 - Added a new countable trait
 - Added more and more tests
 
-## [0.1.0] - 2017-01-29
+## 0.1.0 - 2017-01-29
+
 ### Added
 
 - Initial Implementation
