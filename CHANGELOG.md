@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.4 - 2017-04-26
+
 ### Added
 
 - Delegate Containers #9
