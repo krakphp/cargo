@@ -12,6 +12,10 @@ abstract class ContainerDecorator extends AbstractContainer
         $this->container = $container;
     }
 
+    public function __clone() {
+        $this->container = clone $this->container;
+    }
+
     public function get($id, Cargo\Container $container = null) {
         return $this->container->get($id, $container ?: $this);
     }
