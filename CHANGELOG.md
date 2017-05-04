@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Cloneable Containers #11
+
 ## 0.2.4 - 2017-04-26
 
 ### Added

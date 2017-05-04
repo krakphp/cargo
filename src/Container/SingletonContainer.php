@@ -17,6 +17,11 @@ class SingletonContainer extends ContainerDecorator
         $this->cache = new SplObjectStorage();
     }
 
+    public function __clone() {
+        parent::__clone();
+        $this->cache = clone $this->cache;
+    }
+
     public function get($id, Cargo\Container $container = null) {
         $box = $this->container->box($id);
         if (!$this->cache->contains($box)) {

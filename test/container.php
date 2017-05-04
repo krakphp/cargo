@@ -21,6 +21,13 @@ describe('Container', function() {
         };
         $c['a'];
     });
+    it('is cloneable', function() {
+        $c = Cargo\container();
+        $c['a'] = 1;
+        $c1 = clone $c;
+        $c1['a'] = 2;
+        assert($c1['a'] !== $c['a']);
+    });
 });
 describe('CountableTrait', function() {
     it('can count the values in the container from the keys', function() {
