@@ -18,15 +18,17 @@
     ],
     "require-dev": {
         "krak/auto-args": "^0.3.1",
+        "lavoiesl/php-benchmark": "^1.4",
         "peridot-php/peridot": "^1.18",
         "pimple/pimple": "^3.0",
         "symfony/var-dumper": "^3.2"
     },
     "autoload": {
         "psr-4": {
-            "Krak\\Cargo\\": "src"
+            "Krak\\Cargo\\": "src",
+            "Krak\\CargoV2\\": "srcv2"
         },
-        "files": ["src/box-factory.php", "src/cargo.php"]
+        "files": ["srcv2/Container/options.php", "srcv2/cargo.php", "src/cargo.php", "src/box-factory.php"]
     },
     "require": {
         "krak/array": "^0.4.0",
