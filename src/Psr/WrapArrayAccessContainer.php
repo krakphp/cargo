@@ -6,7 +6,7 @@ use ArrayAccess;
 use Krak\Cargo;
 use Psr\Container\ContainerInterface;
 
-class WrapArrayAcessContainer implements ContainerInterface
+class WrapArrayAccessContainer implements ContainerInterface
 {
     private $container;
 
@@ -15,7 +15,7 @@ class WrapArrayAcessContainer implements ContainerInterface
             throw new Cargo\Exception\ContainerException('Container must implement ArrayAccess or be an array.');
         }
 
-        $this->contianer = $container;
+        $this->container = $container;
     }
 
     public function get($id) {
