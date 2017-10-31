@@ -1,9 +1,9 @@
 <?php
 
-namespace Krak\CargoV2\Psr;
+namespace Krak\Cargo\Psr;
 
 use ArrayAccess;
-use Krak\CargoV2;
+use Krak\Cargo;
 use Psr\Container\ContainerInterface;
 
 class WrapArrayAcessContainer implements ContainerInterface
@@ -12,7 +12,7 @@ class WrapArrayAcessContainer implements ContainerInterface
 
     public function __construct($container) {
         if (!is_array($container) && !$container instanceof ArrayAccess) {
-            throw new CargoV2\Exception\ContainerException('Container must implement ArrayAccess or be an array.');
+            throw new Cargo\Exception\ContainerException('Container must implement ArrayAccess or be an array.');
         }
 
         $this->contianer = $container;
@@ -20,7 +20,7 @@ class WrapArrayAcessContainer implements ContainerInterface
 
     public function get($id) {
         if (!$this->has($id)) {
-            throw new CargoV2\Exception\NotFoundException("The service $id could not be found in the container.");
+            throw new Cargo\Exception\NotFoundException("The service $id could not be found in the container.");
         }
 
         return $this->container[$id];

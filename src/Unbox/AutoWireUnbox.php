@@ -1,25 +1,25 @@
 <?php
 
-namespace Krak\CargoV2\Unbox;
+namespace Krak\Cargo\Unbox;
 
 use Krak\AutoArgs\AutoArgs;
-use Krak\CargoV2;
+use Krak\Cargo;
 use Exception;
 
-class AutoWireUnbox implements CargoV2\Unbox
+class AutoWireUnbox implements Cargo\Unbox
 {
     private $unbox;
     private $auto_args;
 
-    public function __construct(CargoV2\Unbox $unbox, AutoArgs $auto_args = null) {
+    public function __construct(Cargo\Unbox $unbox, AutoArgs $auto_args = null) {
         $this->unbox = $unbox;
         $this->auto_args = $auto_args ?: new AutoArgs();
     }
 
-    public function unbox($box, CargoV2\Container $container, array $params) {
+    public function unbox($box, Cargo\Container $container, array $params) {
         list($value, $opts) = $box;
 
-        $should_autowire = is_string($value) && CargoV2\Container\optsService($opts);
+        $should_autowire = is_string($value) && Cargo\Container\optsService($opts);
         if (!$should_autowire) {
             return $this->unbox->unbox($box, $container, $params);
         }
@@ -31,7 +31,7 @@ class AutoWireUnbox implements CargoV2\Unbox
         ];
 
         if (!class_exists($value) && !function_exists($value)) {
-            throw new CargoV2\Exception\AutoWireException("Could not automatically resolve service $value because it is neither a class or function.");
+            throw new Cargo\Exception\AutoWireException("Could not automatically resolve service $value because it is neither a class or function.");
         }
 
         $just_thrown = false;
@@ -42,7 +42,7 @@ class AutoWireUnbox implements CargoV2\Unbox
                 $value = $this->auto_args->invoke($value, $ctx);
             }
         } catch (Exception $e) {
-            throw new CargoV2\Exception\AutoWireException("Could not automatically resolve service $value", 0, $e);
+            throw new Cargo\Exception\AutoWireException("Could not automatically resolve service $value", 0, $e);
         }
 
         return $value;

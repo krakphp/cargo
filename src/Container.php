@@ -2,14 +2,15 @@
 
 namespace Krak\Cargo;
 
-interface Container extends \ArrayAccess, \Countable
+use Psr\Container\ContainerInterface;
+use Countable;
+
+interface Container extends ContainerInterface, Countable
 {
-    public function get($id, Container $container = null);
-    public function has($id);
+    public function make($id, array $params = [], Container $c = null);
     public function remove($id);
     public function add($id, $box, array $opts = []);
-    /** get the box for this service */
-    public function box($id);
-    /** returns all of the keys defined in the container */
     public function keys();
+    public function box($id);
+    public function register(ServiceProvider $provider);
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace Krak\CargoV2\Container;
+namespace Krak\Cargo\Container;
 
-use Krak\CargoV2;
+use Krak\Cargo;
 
 class DetectCyclesContainer extends ContainerDecorator
 {
     private $cycles = [];
 
-    public function make($id, array $params = [], CargoV2\Container $c = null) {
+    public function make($id, array $params = [], Cargo\Container $c = null) {
         if (array_key_exists($id, $this->cycles)) {
-            throw new CargoV2\Exception\CycleDetectedException(array_keys($this->cycles));
+            throw new Cargo\Exception\CycleDetectedException(array_keys($this->cycles));
         }
 
         $this->cycles[$id] = null;
