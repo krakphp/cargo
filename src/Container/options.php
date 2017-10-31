@@ -1,6 +1,6 @@
 <?php
 
-namespace Krak\CargoV2\Container;
+namespace Krak\Cargo\Container;
 
 function optsFactory(array $opts) {
     return isset($opts['factory']) && $opts['factory'] == true;
@@ -23,4 +23,8 @@ function optsAlias(array $opts) {
 
 function optsService(array $opts) {
     return isset($opts['service']) && $opts['service'] == true;
+}
+
+function optsValue(array $opts) {
+    return isset($opts['service']) && $opts['service'] == false;
 }

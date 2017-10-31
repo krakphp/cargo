@@ -1,6 +1,6 @@
 <?php
 
-namespace Krak\CargoV2\Exception;
+namespace Krak\Cargo\Exception;
 
 class BoxFrozenException extends ContainerException
 {

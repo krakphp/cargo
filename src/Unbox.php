@@ -1,6 +1,6 @@
 <?php
 
-namespace Krak\CargoV2;
+namespace Krak\Cargo;
 
 interface Unbox
 {

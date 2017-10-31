@@ -1,8 +1,8 @@
 <?php
 
-namespace Krak\CargoV2\Psr;
+namespace Krak\Cargo\Psr;
 
-use Krak\CargoV2;
+use Krak\Cargo;
 use Psr\Container\ContainerInterface;
 
 class ChainContainer implements ContainerInterface
@@ -20,7 +20,7 @@ class ChainContainer implements ContainerInterface
             }
         }
 
-        throw new CargoV2\Exception\NotFoundException("The service $id could not be found in any of the containers.");
+        throw new Cargo\Exception\NotFoundException("The service $id could not be found in any of the containers.");
     }
 
     public function has($id) {

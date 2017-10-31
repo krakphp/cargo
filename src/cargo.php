@@ -2,43 +2,63 @@
 
 namespace Krak\Cargo;
 
+/** Wraps a box instance */
+function wrap(Container $c, $id, $box) {
+    $old_box = $c->box($id);
+    if (Container\optsAlias($old_box[1])) {
+        return wrap($c, $old_box[0], $box);
+    }
+
+    $c->add($id, $box, array_merge(
+        $old_box[1],
+        ['wrapped' => $old_box]
+    ));
+    return $c;
+}
+
+function env(Container $c, $id, $env_var = null) {
+    $env_var = $env_var ?: $id;
+    $c->add($id, $env_var, [
+        'env' => true,
+    ]);
+    return $c;
+}
+
+function factory(Container $c, $id, $box = null) {
+    $c->add($id, $box ?: $id, ['factory' => true, 'service' => true]);
+    return $c;
+}
+
+function singleton(Container $c, $id, $box = null) {
+    $c->add($id, $box ?: $id, ['factory' => false, 'service' => true]);
+    return $c;
+}
+
+function alias(Container $c, $id, ...$aliases) {
+    foreach ($aliases as $alias) {
+        $c->add($alias, $id, ['alias' => true, 'factory' => true]);
+    }
+    return $c;
+}
+
 function fill(Container $c, array $values) {
-    foreach ($values as $k => $v) {
-        $c[$k] = $v;
+    foreach ($values as $key => $value) {
+        protect($c, $key, $value);
     }
+    return $c;
 }
 
-function register(Container $c, ServiceProvider $provider, array $values = []) {
-    $provider->register($c);
+function protect(Container $c, $id, $value) {
+    $c->add($id, $value, ['service' => false]);
+    return $c;
+}
+
+function container(array $values = []) {
+    $c = new Container\BoxContainer();
     fill($c, $values);
-}
-
-function toPimple(Container $c) {
-    return new Container\Wrapper\PimpleWrapper($c);
-}
-
-function toInterop(Container $c) {
-    return new Container\Wrapper\InteropWrapper($c);
-}
-
-/** returns the default container */
-function container(array $values = [], $auto_wire = false) {
-    $c = new Container\BoxContainer();
-    $c = new Container\SingletonContainer($c);
-    $c = new Container\BoxFactoryContainer($c);
-    $c = new Container\FreezingContainer($c);
-    if ($auto_wire) {
-        $c = new Container\AutoWireContainer($c);
-    }
-    $c = new Container\AliasContainer($c);
-    $c->fill($values);
     return $c;
 }
 
-/** simple storage container without any awesome features. Use this if you want something lightweight (great for testing). */
-function liteContainer(array $values = [], $box_factory = null) {
-    $c = new Container\BoxContainer();
-    $c = new Container\BoxFactoryContainer($c, $box_factory ?: cachingBoxFactory());
-    $c->fill($values);
-    return $c;
+function containerFactory() {
+    return new ContainerFactory();
 }
