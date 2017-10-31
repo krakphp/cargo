@@ -1,8 +1,8 @@
 # Cargo
 
-Cargo is yet another container library. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org); however, it's design is more modular so that it can be extended. It was designed to be compatible with Pimple; so you can easily use any Pimple service providers with Cargo.
+Cargo is yet another container library that strives for simplicity with powerful extensions. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
-Pimple is a great service container; however it suffers from one problem... extendability. Pimple was never designed to properly extended or decorated which makes it very hard to add features without modifying the core. Cargo is a container that manages to keep the simplicity of Pimple while allowing powerful extensions.
+The main shortcoming of these other libraries is the lack of ability to properly decorate other containers or change any of the internal logic. Cargo's API was designed to be simple, yet allow decoration which keeps the simplicity of Pimple while allowing a powerful feature set like the Laravel container.
 
 ## Installation
 
@@ -20,17 +20,24 @@ There are several ways to create cargo containers. The easiest way is to just cr
 use Krak\Cargo;
 
 $c = Cargo\container();
+// same as doing
+$c = new Cargo\Container\BoxContainer();
 ```
 
-Which is just the same as doing:
+### Services
+
+Services are defined by creation functions using closures.
 
 ```php
-$c = new Container\BoxContainer();
-$c = new Container\SingletonContainer($c);
-$c = new Container\BoxFactoryContainer($c);
-$c = new Container\FreezingContainer($c);
-$c = new Container\AliasContainer($c);
+$c->add('service', function($container) {
+    return new Service($container->get('serviceB'))
+});
 ```
+
+This creation function is not invoked until you try to access the service at a later time. Each service creation function gets passed two values: The container instance, and an array of parameters. You can use both to construct your services any way you need.
+
+To access a service, you can use
+
 
 Cargo is designed to be extendable and flexible, so each container decorator adds a feature that can be removed if not desired.
 
