@@ -38,4 +38,7 @@ abstract class ContainerDecorator extends AbstractContainer
     public function count() {
         return $this->container->count();
     }
+    public function register(Cargo\ServiceProvider $provider, Cargo\Container $c = null) {
+        return $this->container->register($provider, $c ?: $this);
+    }
 }

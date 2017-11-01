@@ -1,3 +1,4 @@
 /vendor/
 /composer.lock
 /playground.php
+/bench/Resources/lazy.php

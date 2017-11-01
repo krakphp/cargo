@@ -19,6 +19,7 @@
     "require-dev": {
         "krak/auto-args": "^0.3.1",
         "lavoiesl/php-benchmark": "^1.4",
+        "peridot-php/leo": "^1.6",
         "peridot-php/peridot": "^1.18",
         "symfony/var-dumper": "^3.2"
     },

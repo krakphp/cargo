@@ -47,8 +47,12 @@ abstract class AbstractContainer implements Cargo\Container, ArrayAccess
         return $this->make($id, [], $this);
     }
 
-    public function register(Cargo\ServiceProvider $provider) {
-        $provider->register($this);
+    public function register(Cargo\ServiceProvider $provider, Cargo\Container $c = null) {
+        $provider->register($c ?: $this);
+    }
+
+    public function count() {
+        return count($this->keys());
     }
 
     abstract public function make($id, array $params = [], Cargo\Container $c = null);
@@ -57,5 +61,4 @@ abstract class AbstractContainer implements Cargo\Container, ArrayAccess
     abstract public function has($id);
     abstract public function box($id);
     abstract public function keys();
-    abstract public function count();
 }

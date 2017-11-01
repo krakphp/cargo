@@ -12,5 +12,5 @@ interface Container extends ContainerInterface, Countable
     public function add($id, $box, array $opts = []);
     public function keys();
     public function box($id);
-    public function register(ServiceProvider $provider);
+    public function register(ServiceProvider $provider, Container $c = null);
 }
