@@ -36,20 +36,11 @@ $c->add('service', function($container) {
 
 This creation function is not invoked until you try to access the service at a later time. Each service creation function gets passed two values: The container instance, and an array of parameters. You can use both to construct your services any way you need.
 
-To access a service, you can use
-
-
-Cargo is designed to be extendable and flexible, so each container decorator adds a feature that can be removed if not desired.
-
-If you want just a bare bones container, you can use the following:
+To access a service, you can use:
 
 ```php
-<?php
-
-$c = Cargo\liteContainer($values = [], $box_container = null);
+$c->get('service');
 ```
-
-This just implements the Box and BoxFactory container which caches services as singletons by default.
 
 ### Defining Services
 
