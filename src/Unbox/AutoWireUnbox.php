@@ -34,7 +34,6 @@ class AutoWireUnbox implements Cargo\Unbox
             throw new Cargo\Exception\AutoWireException("Could not automatically resolve service $value because it is neither a class or function.");
         }
 
-        $just_thrown = false;
         try {
             if (class_exists($value)) {
                 $value = $this->auto_args->construct($value, $ctx);
