@@ -29,6 +29,11 @@
         },
         "files": ["src/Container/options.php", "src/cargo.php"]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Krak\\Cargo\\Test\\": "test"
+        }
+    },
     "require": {
         "psr/container": "^1.0"
     }
