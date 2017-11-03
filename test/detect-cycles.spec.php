@@ -12,11 +12,8 @@ describe('Detect Cycles Container', function() {
         Cargo\alias($c, 'a', 'c');
         Cargo\alias($c, 'c', 'b');
 
-        try {
+        expect(function() use ($c) {
             $c->get('a');
-            assert(false);
-        } catch(Cargo\Exception\CycleDetectedException $e) {
-            assert($e->getCycle() == ['a', 'b', 'c', 'a']);
-        }
+        })->to->throw(Cargo\Exception\CycleDetectedException::class);
     });
 });

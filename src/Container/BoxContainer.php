@@ -54,11 +54,11 @@ class BoxContainer extends AbstractContainer
     /**
      * @throws BoxFrozenException
      */
-    public function add($id, $box, array $opts = []) {
+    public function add($id, $value, array $opts = []) {
         if (array_key_exists($id, $this->cached)) {
             throw new BoxFrozenException($id);
         }
-        $this->boxes[$id] = [$box, $opts];
+        $this->boxes[$id] = [$value, $opts];
     }
 
     public function box($id) {

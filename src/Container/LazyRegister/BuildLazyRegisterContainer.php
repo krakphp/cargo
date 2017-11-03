@@ -27,7 +27,7 @@ class BuildLazyRegisterContainer extends Cargo\Container\ContainerDecorator
         return $this->container->remove($id);
     }
 
-    public function add($id, $box, array $opts = []) {
+    public function add($id, $value, array $opts = []) {
         $current_provider_class = $this->provider_stack->top();
         if (!$current_provider_class) {
             throw new LazyRegisterException("Cannot service $id outside of a Service Provider");
@@ -48,7 +48,7 @@ class BuildLazyRegisterContainer extends Cargo\Container\ContainerDecorator
             $this->lazy_config['services'][$id] = $current_provider_class;
         }
 
-        $this->container->add($id, $box, $opts);
+        $this->container->add($id, $value, $opts);
     }
 
     public function register(Cargo\ServiceProvider $provider, Cargo\Container $c = null) {

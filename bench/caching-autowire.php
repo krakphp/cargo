@@ -5,6 +5,28 @@ require_once __DIR__ . '/services.php';
 
 use Krak\Cargo;
 
+function generateServiceProvider() {
+    $c = Cargo\container();
+    $c->singleton('ServiceJ');
+    $compile = new Cargo\Container\AutoWireCompile\CompileAutoWireServices();
+    $compiled = $compile->compile($c);
+
+    $generate = new Cargo\Container\AutoWireCompile\GenerateServiceProvider();
+    list($class, $contents) = $generate->generateServiceProvider($compiled);
+
+    file_put_contents(__DIR__ . '/Resources/service-provider.php', $contents);
+    file_put_contents(__DIR__ . '/Resources/cached-config.php', sprintf("<?php\n\nreturn %s;", var_export([
+        'class' => $class,
+        'filename' => __DIR__ . '/Resources/service-provider.php'
+    ], true)));
+}
+
+if (isset($argv[1])) {
+    generateServiceProvider();
+    exit;
+}
+
+
 $bm = new Lavoiesl\PhpBenchmark\Benchmark();
 $bm->add('auto-wire', function() {
     $unbox = new Cargo\Unbox\ServiceUnbox();
@@ -15,16 +37,9 @@ $bm->add('auto-wire', function() {
 });
 $bm->add('cached', function() {
     $c = new Cargo\Container\BoxContainer();
-    $c[ServiceA::class] = function() { return new ServiceA(); };
-    $c[ServiceB::class] = function($c) { return new ServiceB($c->get('ServiceA')); };
-    $c[ServiceC::class] = function($c) { return new ServiceC($c->get('ServiceB')); };
-    $c[ServiceD::class] = function($c) { return new ServiceD($c->get('ServiceC')); };
-    $c[ServiceE::class] = function($c) { return new ServiceE($c->get('ServiceD')); };
-    $c[ServiceF::class] = function($c) { return new ServiceF($c->get('ServiceE')); };
-    $c[ServiceG::class] = function($c) { return new ServiceG($c->get('ServiceF')); };
-    $c[ServiceH::class] = function($c) { return new ServiceH($c->get('ServiceG')); };
-    $c[ServiceI::class] = function($c) { return new ServiceI($c->get('ServiceH')); };
-    $c[ServiceJ::class] = function($c) { return new ServiceJ($c->get('ServiceI')); };
+    $config = include __DIR__ . '/Resources/cached-config.php';
+    require_once $config['filename'];
+    $c->register(new $config['class']);
     $c->get('ServiceJ');
 });
 

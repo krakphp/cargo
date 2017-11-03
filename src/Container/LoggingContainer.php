@@ -30,13 +30,13 @@ class LoggingContainer extends ContainerDecorator
         ]);
         return $this->container->remove($id);
     }
-    public function add($id, $box, array $opts = []) {
+    public function add($id, $value, array $opts = []) {
         $this->logger->log($this->level, "Cargo Container adding service {id}", [
             'id' => $id,
-            'box' => $box,
+            'value' => $value,
             'opts' => $opts,
         ]);
-        return $this->container->add($id, $box, $opts);
+        return $this->container->add($id, $value, $opts);
     }
     public function has($id) {
         $this->logger->log($this->level, "Cargo Container checking if service {id} exists", [

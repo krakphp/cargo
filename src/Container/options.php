@@ -13,6 +13,14 @@ function optsWrapped(array $opts) {
         : null;
 }
 
+/** finds the unwrapped value */
+function unwrapBox(array $box) {
+    while (isset($box[1]['wrapped'])) {
+        $box = $box[1]['wrapped'];
+    }
+    return $box;
+}
+
 function optsEnv(array $opts) {
     return isset($opts['env']) && $opts['env'] == true;
 }

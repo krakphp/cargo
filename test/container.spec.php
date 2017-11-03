@@ -6,7 +6,7 @@ use Krak\Cargo\{
     Unbox,
     Exception\BoxFrozenException
 };
-use function Krak\Cargo\{factory, wrap, alias, container, containerFactory, env};
+use function Krak\Cargo\{factory, replace, define, wrap, alias, container, containerFactory, env};
 
 describe('Box Container', function() {
     it('can add boxes', function() {
@@ -113,6 +113,14 @@ describe('alias', function() {
         alias($c, 'a', 'b', 'c');
         assert($c->keys(), ['a', 'b', 'c']);
     });
+    it('can allow aliased services to be re-defined', function() {
+        $c = new BoxContainer();
+        $c->add('a', 1);
+        alias($c, 'a', 'b');
+        $c->add('b', 2);
+        expect($c->get('a'))->to->equal(1);
+        expect($c->get('b'))->to->equal(2);
+    });
 });
 describe('wrap', function() {
     it('wraps services', function() {
@@ -155,6 +163,48 @@ describe('wrap', function() {
             return $obj;
         });
         assert($c->get('a') !== $c->get('a'));
+    });
+});
+describe('replace', function() {
+    it('can simply replace a service', function() {
+        $c = new BoxContainer();
+        $c->add('a', 1, ['q' => 1]);
+        replace($c, 'a', 2, ['r' => 2]);
+        expect($c->box('a'))->to->equal([2, ['q' => 1, 'r' => 2]]);
+    });
+    it('can replace an aliased service', function() {
+        $c = new BoxContainer();
+        $c->add('a', 1);
+        alias($c, 'a', 'b');
+        replace($c, 'b', 2);
+        expect($c->get('b'))->to->equal($c->get('a'));
+        expect($c->get('a'))->to->equal(2);
+    });
+    it('can replace a wrapped service', function() {
+        $c = new BoxContainer();
+        $c->add('a', 1);
+        $c->wrap('a', function($a) {
+            return $a * 2;
+        });
+        $c->wrap('a', function($a) {
+            return $a + 1;
+        });
+        $c->replace('a', 2);
+        expect($c->get('a'))->to->equal(5);
+    });
+});
+describe('define', function() {
+    it('will add a service if not already added', function() {
+        $c = new BoxContainer();
+        $c->define('a', 1);
+        expect($c->get('a'))->to->equal(1);
+    });
+    it('will replace a service if already added', function() {
+        $c = new BoxContainer();
+        $c->define('a', 1);
+        $c->alias('a', 'b');
+        $c->define('b', 2);
+        expect($c->get('a'))->to->equal(2);
     });
 });
 describe('env', function() {
