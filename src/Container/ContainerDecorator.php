@@ -23,8 +23,8 @@ abstract class ContainerDecorator extends AbstractContainer
     public function remove($id) {
         return $this->container->remove($id);
     }
-    public function add($id, $box, array $opts = []) {
-        return $this->container->add($id, $box, $opts);
+    public function add($id, $value, array $opts = []) {
+        return $this->container->add($id, $value, $opts);
     }
     public function has($id) {
         return $this->container->has($id);

@@ -24,14 +24,20 @@ abstract class AbstractContainer implements Cargo\Container, ArrayAccess
     public function wrap($id, $wrapper) {
         return Cargo\wrap($this, $id, $wrapper);
     }
+    public function replace($id, $value, array $opts = []) {
+        return Cargo\replace($this, $id, $value, $opts);
+    }
+    public function define($id, $value, array $opts = []) {
+        return Cargo\define($this, $id, $value, $opts);
+    }
     public function protect($id, $value) {
         return Cargo\protect($this, $id, $value);
     }
     public function factory($id, $factory = null) {
         return Cargo\factory($this, $id, $factory);
     }
-    public function singleton($id, $factory = null) {
-        return Cargo\singleton($this, $id, $factory);
+    public function singleton($id, $service = null) {
+        return Cargo\singleton($this, $id, $service);
     }
     public function fill(array $values) {
         return Cargo\fill($this, $values);
