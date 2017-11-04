@@ -1,39 +1,40 @@
 # Cargo
 
+[![Author](https://img.shields.io/badge/author-%40ragboyjr-blue.svg)](https://twitter.com/ragboyjr)
+![Release][https://img.shields.io/badge/release-v0.3--dev-blue.svg]
+
 Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
-  - [Basic](#basic-usage)
-  - [Creating Containers](#creating-containers)
-  - [Services and Parameters](#services-and-parameters)
-  - [Accessing the Container](#accessing-the-container)
+- [Basic Usage](#basic-usage)
+
+- [Container](#container)
+  - [Defining Services/Values](#defining-services-values)
+  - [Accessing Services/Values](#accessing-services-values)
   - [Environment Parameters](#environment-parameters)
   - [Wrapping Services](#wrapping-services)
   - [Aliases](#aliases)
-  - [Auto Wiring](#auto-wiring)
-  - [Service Providers](#service-providers)
-  - [PSR Utilities](#psr-utilities)
-  - [Tuning for Production](#tuning-for-production)
-  - [Lazy Loading Service Providers](#lazy-loading-service-providers)
-  - [Caching Auto Wired Services](#caching-auto-wired-services)
+- [Auto Wiring](#auto-wiring)
+- [Service Providers](#service-providers)
+- [Performance](#performance)
+    - [Lazy Loading Service Providers](#lazy-loading-service-providers)
+    - [Caching Auto Wired Services](#caching-auto-wired-services)
+- [PSR Utilities](#psr-utilities)
+- [Extending Cargo](#extending-cargo)
+  - [Container Interface](#container-interface)
+  - [Decorators](#decorators)
+  - [Unboxing](#unboxing)
 - [API](#api)
+  - [Interfaces](#interfaces)
   - [Container Factories](#container-factories)
   - [Container Functions](#container-functions)
-  - [Containers](#containers)
-
-<table>
-  <tbody>
-    <tr>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-
-## Header
-### Header
-## Header
+  - [Containers](#containers-1)
+  - [Unboxing](#unboxing-1)
+  - [Exceptions](#exceptions)
+  - [Psr Utilities](#psr-utilities-1)
+- [Development](#development)
+  -
 
 ## Features
 
@@ -56,8 +57,6 @@ Install with composer at `krak/cargo`.
 Cargo is compatible with php 5.6+ and 7.0+.
 
 ## Usage
-
-### Basic Usage
 
 ```php
 <?php
