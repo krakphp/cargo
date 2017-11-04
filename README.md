@@ -1,8 +1,25 @@
 # Cargo
 
-Cargo is yet another container library that strives for simplicity with powerful extensions. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
+Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
-The main shortcoming of these other libraries is the lack of ability to properly decorate other containers or change any of the internal logic. Cargo's API was designed to be simple, yet allow decoration which keeps the simplicity of Pimple while allowing a powerful feature set like the Laravel container.
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic](#baseic-usage)
+
+## Features
+
+- Simple API, Awesome extendability
+- Container Decorators galore to provide or implement any feature you want
+- Support for Environment Parameters
+- Auto Wired Services (Automatic Dependency Injection) for development
+- Ability to cache Auto Wired services for production
+- Lazy Loading of Service Providers
+- PSR-11 Compliant
+- Integrates well with Pimple and other PSR-11 containers via the PSR utilities
+- Cycles Detection Container that will catch any circular dependencies and prevent infinite loops!
+- Zero dependencies
+- and so much more!
 
 ## Installation
 
@@ -10,7 +27,23 @@ Install with composer at `krak/cargo`
 
 ## Usage
 
-### Creating a Container
+### Basic Usage
+
+```php
+<?php
+
+use Krak\Cargo;
+
+$c = Cargo\container();
+$c->add('service.parameter', 'value');
+$c->singleton(AcmeService::class, function($c) {
+    return new AcmeService($c['service.parameter']);
+});
+
+$acme_service = $c->get(AcmeService::class);
+```
+
+### Creating Containers
 
 There are several ways to create cargo containers. The easiest way is to just create the default container like so:
 
@@ -24,7 +57,7 @@ $c = Cargo\container();
 $c = new Cargo\Container\BoxContainer();
 ```
 
-### Services
+### Services and Parameters
 
 Services are defined by creation functions using closures.
 
@@ -41,6 +74,36 @@ To access a service, you can use:
 ```php
 $c->get('service');
 ```
+
+### Accessing the Container
+
+
+### Environment Parameters
+
+### Wrapping Services
+
+### Aliases
+
+### Auto Wiring
+
+### Service Providers
+
+### PSR Utilities
+
+### Tuning for Production
+
+### Lazy Loading Service Providers
+
+### Caching Auto Wired Services
+
+## API
+
+### interface Container
+
+```php
+
+```
+
 
 ### Defining Services
 
