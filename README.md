@@ -5,27 +5,15 @@
 
 Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
-
-* [Why?](#why)
-* [Installation](#installation)
-* [OO and Chaining](#oo-and-chaining)
-* [Implemented Interfaces](#implemented-interfaces)
-* [PHP 5.6 Creation](#php-56-creation)
-* [StaticStringy](#staticstringy)
-* [Class methods](#class-methods)
-    * [create](#createmixed-str--encoding-)
-* [Instance methods](#instance-methods)
-
-
 - [Features](#features)
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Container](#container)
-  - [Defining Services/Values](#defining-services-values)
-  - [Accessing Services/Values](#accessing-services-values)
-  - [Environment Parameters](#environment-parameters)
-  - [Wrapping Services](#wrapping-services)
-  - [Aliases](#aliases)
+    - [Defining Services/Values](#defining-services-values)
+    - [Accessing Services/Values](#accessing-services-values)
+    - [Environment Parameters](#environment-parameters)
+    - [Wrapping Services](#wrapping-services)
+    - [Aliases](#aliases)
 - [Auto Wiring](#auto-wiring)
 - [Service Providers](#service-providers)
 - [Performance](#performance)
@@ -33,19 +21,18 @@ Cargo is yet another service container library that strives for simplicity with 
     - [Caching Auto Wired Services](#caching-auto-wired-services)
 - [PSR Utilities](#psr-utilities)
 - [Extending Cargo](#extending-cargo)
-  - [Container Interface](#container-interface)
-  - [Decorators](#decorators)
-  - [Unboxing](#unboxing)
+    - [Container Interface](#container-interface)
+    - [Decorators](#decorators)
+    - [Unboxing](#unboxing)
 - [API](#api)
-  - [Interfaces](#interfaces)
-  - [Container Factories](#container-factories)
-  - [Container Functions](#container-functions)
-  - [Containers](#containers-1)
-  - [Unboxing](#unboxing-1)
-  - [Exceptions](#exceptions)
-  - [Psr Utilities](#psr-utilities-1)
+    - [Interfaces](#interfaces)
+    - [Container Factories](#container-factories)
+    - [Container Functions](#container-functions)
+    - [Containers](#containers-1)
+    - [Unboxing](#unboxing-1)
+    - [Exceptions](#exceptions)
+    - [Psr Utilities](#psr-utilities-1)
 - [Development](#development)
-  -
 
 ## Features
 
