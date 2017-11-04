@@ -5,10 +5,21 @@
 
 Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
+
+* [Why?](#why)
+* [Installation](#installation)
+* [OO and Chaining](#oo-and-chaining)
+* [Implemented Interfaces](#implemented-interfaces)
+* [PHP 5.6 Creation](#php-56-creation)
+* [StaticStringy](#staticstringy)
+* [Class methods](#class-methods)
+    * [create](#createmixed-str--encoding-)
+* [Instance methods](#instance-methods)
+
+
 - [Features](#features)
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
-
 - [Container](#container)
   - [Defining Services/Values](#defining-services-values)
   - [Accessing Services/Values](#accessing-services-values)
