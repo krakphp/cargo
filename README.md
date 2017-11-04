@@ -5,7 +5,35 @@ Cargo is yet another service container library that strives for simplicity with 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Basic](#baseic-usage)
+  - [Basic](#basic-usage)
+  - [Creating Containers](#creating-containers)
+  - [Services and Parameters](#services-and-parameters)
+  - [Accessing the Container](#accessing-the-container)
+  - [Environment Parameters](#environment-parameters)
+  - [Wrapping Services](#wrapping-services)
+  - [Aliases](#aliases)
+  - [Auto Wiring](#auto-wiring)
+  - [Service Providers](#service-providers)
+  - [PSR Utilities](#psr-utilities)
+  - [Tuning for Production](#tuning-for-production)
+  - [Lazy Loading Service Providers](#lazy-loading-service-providers)
+  - [Caching Auto Wired Services](#caching-auto-wired-services)
+- [API](#api)
+  - [Container Factories](#container-factories)
+  - [Container Functions](#container-functions)
+  - [Containers](#containers)
+
+<table>
+  <tbody>
+    <tr>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+## Header
+### Header
+## Header
 
 ## Features
 
@@ -23,7 +51,9 @@ Cargo is yet another service container library that strives for simplicity with 
 
 ## Installation
 
-Install with composer at `krak/cargo`
+Install with composer at `krak/cargo`.
+
+Cargo is compatible with php 5.6+ and 7.0+.
 
 ## Usage
 
@@ -98,12 +128,36 @@ $c->get('service');
 
 ## API
 
-### interface Container
+### Container Factories
 
-```php
+##### container(array $values = [])
 
-```
+##### containerFactory()
 
+### Container Functions
+
+##### wrap(Container $c, $id, $value)
+
+##### define(Container $c, $id, $value, array $opts = [])
+
+##### replace(Container $c, $id, $value, array $opts = [])
+
+##### env(Container $c, $id, $env_var = null)
+
+##### factory(Container $c, $id, $value = null)
+
+##### singleton(Container $c, $id, $value = null)
+
+##### alias(Container $c, $id, ...$aliases)
+
+##### fill(Container $c, array $values)
+
+##### protect(Container $c, $id, $value)
+
+
+#### interface Container
+#### interface Unbox
+#### class ContainerFactory
 
 ### Defining Services
 
