@@ -1,7 +1,7 @@
 # Cargo
 
 [![Author](https://img.shields.io/badge/author-%40ragboyjr-blue.svg)](https://twitter.com/ragboyjr)
-![Release][https://img.shields.io/badge/release-v0.3--dev-blue.svg]
+![Release](https://img.shields.io/badge/release-v0.3--dev-blue.svg)
 
 Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
 
