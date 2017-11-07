@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title></title>
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/highlight.dark.css">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="/">
+                The title
+                <small class="hidden-xs hidden-sm">
+                    This is the default subtitle!
+                </small>
+            </a>
+
+            
+        </header>
+
+        <main class="container">
+            <div class="row">
+
+                
+                <section id="content" class="col-sm-12">
+                    <h1 id="cargo">Cargo</h1>
+<p><a href="https://twitter.com/ragboyjr"><img src="https://img.shields.io/badge/author-%40ragboyjr-blue.svg" alt="Author" /></a>
+<img src="https://img.shields.io/badge/release-v0.3--dev-blue.svg" alt="Release" /></p>
+<p>Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow <a href="http://pimple.sensiolabs.org">Pimple</a> and the <a href="https://laravel.com/docs/5.5/container">Laravel Service Container</a>; however, its design is more much modular so that it can extended to fit any need.</p>
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#container">Container</a>
+<ul>
+<li><a href="#creating-containers">Creating Containers</a></li>
+<li><a href="#defining-services-values">Defining Services/Values</a></li>
+<li><a href="#accessing-services-values">Accessing Services/Values</a></li>
+<li><a href="#environment-parameters">Environment Parameters</a></li>
+<li><a href="#wrapping-services">Wrapping Services</a></li>
+<li><a href="#aliases">Aliases</a></li>
+</ul></li>
+<li><a href="#auto-wiring">Auto Wiring</a></li>
+<li><a href="#service-providers">Service Providers</a></li>
+<li><a href="#performance">Performance</a>
+<ul>
+<li><a href="#lazy-loading-service-providers">Lazy Loading Service Providers</a></li>
+<li><a href="#caching-auto-wired-services">Caching Auto Wired Services</a></li>
+</ul></li>
+<li><a href="#psr-utilities">PSR Utilities</a></li>
+<li><a href="#extending-cargo">Extending Cargo</a>
+<ul>
+<li><a href="#container-interface">Container Interface</a></li>
+<li><a href="#decorators">Decorators</a></li>
+<li><a href="#unboxing">Unboxing</a></li>
+</ul></li>
+<li><a href="#api">API</a>
+<ul>
+<li><a href="#interfaces">Interfaces</a></li>
+<li><a href="#container-factories">Container Factories</a></li>
+<li><a href="#container-functions">Container Functions</a></li>
+<li><a href="#containers-1">Containers</a></li>
+<li><a href="#unboxing-1">Unboxing</a></li>
+<li><a href="#exceptions">Exceptions</a></li>
+<li><a href="#psr-utilities-1">Psr Utilities</a></li>
+</ul></li>
+<li><a href="#development">Development</a></li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li>Simple API, Awesome extendability</li>
+<li>Container Decorators galore to provide or implement any feature you want</li>
+<li>Support for Environment Parameters</li>
+<li>Auto Wired Services (Automatic Dependency Injection) for development</li>
+<li>Ability to cache Auto Wired services for production</li>
+<li>Lazy Loading of Service Providers</li>
+<li>PSR-11 Compliant</li>
+<li>Integrates well with Pimple and other PSR-11 containers via the PSR utilities</li>
+<li>Cycles Detection Container that will catch any circular dependencies and prevent infinite loops!</li>
+<li>Zero dependencies</li>
+<li>and so much more!</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Install with composer at <code>krak/cargo</code>.</p>
+<p>Cargo is compatible with php 5.6+ and 7.0+.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<pre><code class="language-php">&lt;?php
+
+use Krak\Cargo;
+
+$c = Cargo\container();
+$c-&gt;add('service.parameter', 'value');
+$c-&gt;singleton(AcmeService::class, function($c) {
+    return new AcmeService($c['service.parameter']);
+});
+$c-&gt;factory(FooService::class); // will be auto instantiated
+
+$acme_service = $c-&gt;get(AcmeService::class);
+$foo_service = $c-&gt;get(FooService::class);</code></pre>
+<h2 id="container">Container</h2>
+<h3 id="creating-containers">Creating Containers</h3>
+<p>There are several ways to create cargo containers. The easiest way is to just create the default container like so:</p>
+<pre><code class="language-php">&lt;?php
+
+use Krak\Cargo;
+
+$c = Cargo\container();
+// same as doing
+$c = new Cargo\Container\BoxContainer();</code></pre>
+<p>You can also use the ContainerFactory which is a utility that will decorate and configure the containers to create the feature set you want:</p>
+<pre><code class="language-php">$c = Cargo\containerFactory()-&gt;autoWire()-&gt;detectCycles()-&gt;env()-&gt;create();
+// or
+$c = (new Cargo\ContainerFactory())-&gt;autoWire()-&gt;detectCycles()-&gt;env()-&gt;create();</code></pre>
+<p>And if you need even more customization, you can always just create the containers youself.</p>
+<pre><code class="language-php">$unbox = new Cargo\Unbox\ServiceUnbox();
+$unbox = new Cargo\Unbox\EnvUnbox($unbox);
+$c = new Cargo\Container\BoxContainer($unbox);
+$c = new Cargo\Container\DetectCyclesContainer($c);</code></pre>
+<h3 id="defining-services-and-parameters">Defining Services and Parameters</h3>
+<p>The container's primary purpose is to store service definitions and subsequently build the defined services.</p>
+<p>Services are defined by factory functions which are used to build/create the service. Parameters are simply values stored in the container and will be retrieved as they were defined. Parameters can be useful for configuring the service factory functions.</p>
+<pre><code class="language-php">$c-&gt;add('service', function($container, $parameters) {
+    return new Service($container-&gt;get('parameter'));
+});
+$c-&gt;add('parameter', 1);</code></pre>
+<p>This factory function is not invoked until you try to access the service at a later time. Each service creation function gets passed two values: The container instance, and an array of parameters. You can use both to construct your services any way you need.</p>
+<p>To access a service, you can use:</p>
+<pre><code class="language-php">$c-&gt;get('service');</code></pre>
+<h3 id="accessing-the-container">Accessing the Container</h3>
+<h3 id="environment-parameters">Environment Parameters</h3>
+<h3 id="wrapping-services">Wrapping Services</h3>
+<h3 id="aliases">Aliases</h3>
+<h3 id="auto-wiring">Auto Wiring</h3>
+<h3 id="service-providers">Service Providers</h3>
+<h3 id="psr-utilities">PSR Utilities</h3>
+<h3 id="tuning-for-production">Tuning for Production</h3>
+<h3 id="lazy-loading-service-providers">Lazy Loading Service Providers</h3>
+<h3 id="caching-auto-wired-services">Caching Auto Wired Services</h3>
+<h2 id="api">API</h2>
+<h3 id="container-factories">Container Factories</h3>
+<h5 id="containerarray-values--">container(array $values = [])</h5>
+<h5 id="containerfactory">containerFactory()</h5>
+<h3 id="container-functions">Container Functions</h3>
+<h5 id="wrapcontainer-c-id-value">wrap(Container $c, $id, $value)</h5>
+<h5 id="definecontainer-c-id-value-array-opts--">define(Container $c, $id, $value, array $opts = [])</h5>
+<h5 id="replacecontainer-c-id-value-array-opts--">replace(Container $c, $id, $value, array $opts = [])</h5>
+<h5 id="envcontainer-c-id-env_var--null">env(Container $c, $id, $env_var = null)</h5>
+<h5 id="factorycontainer-c-id-value--null">factory(Container $c, $id, $value = null)</h5>
+<h5 id="singletoncontainer-c-id-value--null">singleton(Container $c, $id, $value = null)</h5>
+<h5 id="aliascontainer-c-id-aliases">alias(Container $c, $id, ...$aliases)</h5>
+<h5 id="fillcontainer-c-array-values">fill(Container $c, array $values)</h5>
+<h5 id="protectcontainer-c-id-value">protect(Container $c, $id, $value)</h5>
+<h4 id="interface-container">interface Container</h4>
+<h4 id="interface-unbox">interface Unbox</h4>
+<h4 id="class-containerfactory">class ContainerFactory</h4>
+<h3 id="defining-services">Defining Services</h3>
+<p>Services can defined and configured several ways.</p>
+<pre><code class="language-php">$c['a'] = function($c) {
+    return new ServiceA();
+};
+// or
+$c-&gt;add('b', function($c) {
+    return new ServiceB($c['a']);
+});</code></pre>
+<p>Due to the BoxFactoryContainer, all Closures are treated as lazy services. Meaning, they are not invoked until needed. The Singleton container also defaults all services to be singletons, so the result of the service definition closure is cached so that it's not invoked twice. These semantics mimic the behavior of the <a href="http://pimple.sensiolabs.org">Pimple Container</a>;</p>
+<h3 id="accessing-the-container-1">Accessing the Container</h3>
+<p>You can either use the ArrayAccess methods or <code>get</code> to retrieve values and invoke services.</p>
+<pre><code>$c['a'] == $c-&gt;get('a');</code></pre>
+<h3 id="factory-or-singleton-services">Factory or Singleton Services</h3>
+<p>You can specify if you want to define a service as a factory or singleton with these two helper methods.</p>
+<pre><code class="language-php">$c-&gt;singleton('a', function() {
+    return new ServiceA();
+});
+$c-&gt;factory('b', function() {
+    return new ServiceB();
+});
+// $c['a'] === $c['a'] - same instance each time
+// $c['b'] !== $c['b'] - different instance each time</code></pre>
+<h3 id="parametersvalues">Parameters/Values</h3>
+<p>Anything added to the container that isn't a service is defined as value.</p>
+<pre><code class="language-php">$c['a.parameter'] = 'value';
+$c['a'] = function($c) {
+    return new ServiceA($c['a.parameter']);
+};</code></pre>
+<p>Values are stored and retrieved as is. No processing is done to them.</p>
+<p>If you want to use a closure as a parameter, you can use the <code>protect</code> method:</p>
+<pre><code class="language-php">$func = function() {};
+$c-&gt;protect('a.closure_parameter', $func);
+// it returns the same instance because values are just stored as is.
+// $c['a.closure_parameter'] === $func</code></pre>
+<h3 id="env-parameters">Env Parameters</h3>
+<p>You can register parameters to be read from the environment with the <code>env</code> method:</p>
+<pre><code class="language-php">$c-&gt;env('APP_KEY', $alias = 'application.key');
+// $c['APP_KEY'] === $c['application.key'] are read from the env</code></pre>
+<h3 id="wrapping-services-1">Wrapping Services</h3>
+<p>Similar to Pimple's <code>extend</code>, Cargo allows you to wrap service definitions for decoration.</p>
+<p>If you want to replace a definition, you would simply redefine it; however, if you want to decorate or modify a definition, you wrap it:</p>
+<pre><code class="language-php">$c['logger'] = function() {
+    return new Logger();
+};
+$c-&gt;wrap('logger', function($logger, $c) {
+    $logger-&gt;setValue($c['value']);
+    return new MyLogger($logger);
+});
+// $c['logger'] instanceof MyLogger == true</code></pre>
+<h3 id="service-freezing">Service Freezing</h3>
+<p>Services by default will be frozen due to the FreezingContainer. You can redefine entries as much you'd like, but once a service is invoked, it is considered frozen and will throw an exception if you try to redefine it.</p>
+<pre><code class="language-php">$c['a'] = function() {};
+// ok to redefine because we haven't invoked 'a' yet.
+$c['a'] = function() {};
+$service = $c['a'];
+// this will throw an exception because the service was frozen
+$c['a'] = function() {};</code></pre>
+<h3 id="aliasing-entries">Aliasing Entries</h3>
+<p>It's often useful to use class names as the identifier, but then also provide aliases for a quick reference.</p>
+<pre><code class="language-php">$c[Acme\ServiceA::class] = function() {
+    return new Acme\ServiceA();
+};
+$c-&gt;alias(Acme\ServiceA::class, 'acme.service_a', 'a');
+// $c[Acme\ServiceA::class] === $c['service_a'] === $c['a']</code></pre>
+<h3 id="auto-wiring-1">Auto Wiring</h3>
+<p>Auto wiring allows the container to try and automatically instantiate services if they aren't already defined in the container. To enable auto-wiring, you need to:</p>
+<ol>
+<li>Install the <a href="https://github.com/krakphp/auto-args">Auto Args</a> Library (<code>composer install krak/auto-args</code>)</li>
+<li>Use the AutoWireContainer</li>
+</ol>
+<pre><code class="language-php">// the second parameter as true will include the auto wiring
+$c = Cargo\container([], $auto_wire = true);
+$stack = $c-&gt;get('SplStack');
+// will return an instance of SplStack as a singleton.
+
+// defines 'StdClass' as a factory instance and will set it up for auto-wiring since no definition was given.
+$c-&gt;factory('StdClass');
+// $c['StdClass'] !== $c['StdClass']</code></pre>
+<p>In addition, you can bind any class to be auto wired:</p>
+<pre><code class="language-php">$c-&gt;singleton('a', SplStack::class);
+$c-&gt;factory('b', ArrayObject::class);</code></pre>
+<p><code>a</code> and <code>b</code> will resolve to their respective classes. This only works on singleton/factory entries, else it'll just treat the service like a string value and won't try to auto-resolve it.</p>
+<h3 id="service-providers-1">Service Providers</h3>
+<p><code>Cargo\ServiceProvider</code> provides a simple interface for defining multiple related services.</p>
+<pre><code class="language-php">interface ServiceProvider {
+    public function register(Cargo\Container $c);
+}</code></pre>
+<p>You can register service providers with a given container with the <code>register</code> method:</p>
+<pre><code class="language-php">$c-&gt;register(new FooProvider(), [
+    'foo.parameters' =&gt; 1,
+]); // or Cargo\register($c, new FooProvider(), [])</code></pre>
+<h3 id="container-interop">Container Interop</h3>
+<p><code>Krak\Cargo\Container</code> is not compatible with the <code>ContainerInterop</code> interface by default. However, you can easily export the container to an Interop container using the <code>toInterop</code> function.</p>
+<pre><code class="language-php">$interop = Cargo\toInterop($c); // or $c-&gt;toInterop
+// $interop instanceof Psr\Container\ContainerInterface</code></pre>
+<h3 id="pimple-interop">Pimple Interop</h3>
+<p>Achieving Pimple compatibility is simple with the <code>toPimple</code> function.</p>
+<pre><code class="language-php">$pimple = Cargo\toPimple($c); // or $c-&gt;toPimple()
+
+$pimple['a'] = function() {};
+$pimple-&gt;extend('a', function() {});
+$pimple['b'] = $pimple-&gt;protect(function() {
+
+});
+
+// $c has access to all services defined in pimple
+$c['b'];</code></pre>
+<h3 id="delegate-containers">Delegate Containers</h3>
+<p>In an effort to provide better integration with other containers, we provide delegate containers to allow you to default to a cargo definitions, but fallback to the delegate container.</p>
+<p><code>ArrayAccessDelegateContainer</code> and <code>PsrDelegateContainer</code> both act as delegate containers. The first will accept any array or <code>ArrayAccess</code> object (like Pimple), and the other will accept any Psr Container.</p>
+<pre><code class="language-php">&lt;?php
+
+$pimple = new Pimple\Container();
+$pimple['a'] = 1;
+$pimple['b'] = 1;
+$c = Cargo\container();
+$c = new Cargo\Container\ArrayAccessDelegateContainer($c, $pimple);
+$c['b'] = 2;
+
+assert($c['b'] == 2 &amp;&amp; $c['a'] == 1);</code></pre>
+<h2 id="cargo-design">Cargo Design</h2>
+<h3 id="container-interface-for-decoration">Container Interface for Decoration</h3>
+<p>To do...</p>
+<h3 id="boxes">Boxes</h3>
+<p>To do...</p>
+<h2 id="api-1">API</h2>
+<h3 id="function-aliascontainer-c-id-aliases">function alias(Container $c, $id, ...$aliases)</h3>
+<p>Aliases an entry <code>$id</code> into <code>$aliases</code> for the container <code>$c</code>. Each alias will share the same box reference as the original entry.</p>
+<h3 id="function-envcontainer-c-var_name-id--null">function env(Container $c, $var_name, $id = null)</h3>
+<p>Adds an EnvBox entry into the container <code>$c</code> with <code>$var_name</code> being the name of the env var and <code>$id</code> is the entry name.
+If <code>$id</code> is left null, then it will default to <code>$var_name</code>.</p>
+                </section>
+
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p class="text-muted">
+                    website generated with <a href="http://couscous.io" title="Markdown website generator">Couscous</a>
+                </p>
+            </div>
+        </footer>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//yastatic.net/highlightjs/8.2/highlight.min.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>
