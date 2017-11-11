@@ -1,3 +1,6 @@
+---
+currentMenu: home
+---
 # Cargo
 
 [![Author](https://img.shields.io/badge/author-%40ragboyjr-blue.svg)](https://twitter.com/ragboyjr)
@@ -61,16 +64,6 @@ $c->factory(FooService::class); // will be auto instantiated
 
 $acme_service = $c->get(AcmeService::class);
 $foo_service = $c->get(FooService::class);
-```
-
-## Documentation
-
-[Docs](https://krakphp.github.io/cargo)
-
-## Testing
-
-```
-make test
 ```
 
 ## Container

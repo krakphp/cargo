@@ -8,8 +8,29 @@
 
 # List of directories to include in the processing (by default it's empty, so all markdown files are parsed)
 # Paths are relative to the optional source path given when generating the website, repository root by default
-#include:
-#    - docs
+include:
+    - doc
+
+menu:
+  items:
+    home:
+      text: Home
+      relativeUrl:
+    extending-cargo:
+      text: Extending Cargo
+      relativeUrl: extending-cargo.html
+    container:
+      text: Container
+      relativeUrl: container.html
+    performance:
+      text: Performance
+      relativeUrl: performance.html
+    psr-utilities:
+      text: PSR Utilities
+      relativeUrl: psr-utilities.html
+    api:
+      text: API
+      relativeUrl: api.html
 
 # List of directories to exclude from the processing (default contains "vendor" and "website")
 # Paths are relative to the optional include paths given when generating the website, repository root by default
@@ -21,7 +42,7 @@ branch: gh-pages
 
 # Any variable you put in this file is also available in the Twig layouts:
 title: Cargo
-subTitle: The elegant IoC container you won't outgrow.
+subTitle: The IoC container you won't outgrow.
 
 # Base URL of the published website (no "/" at the end!)
 # You are advised to set and use this variable to write your links in the HTML layouts
