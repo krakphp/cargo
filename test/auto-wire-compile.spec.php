@@ -180,7 +180,6 @@ describe('Generate Compiled Service Provider', function() {
         $compiled = $compile->compile($c);
         $generate = new GenerateServiceProvider();
         list($class, $contents) = $generate->generateServiceProvider($compiled);
-        echo($contents);
 
         eval(substr($contents, 7));
         $c->register(new $class());
