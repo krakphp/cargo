@@ -17,6 +17,7 @@
         }
     ],
     "require-dev": {
+        "evert/phpdoc-md": "^0.2.0",
         "krak/auto-args": "^0.3.1",
         "lavoiesl/php-benchmark": "^1.4",
         "peridot-php/leo": "^1.6",

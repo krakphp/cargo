@@ -16,12 +16,12 @@ menu:
     home:
       text: Home
       relativeUrl:
-    extending-cargo:
-      text: Extending Cargo
-      relativeUrl: extending-cargo.html
     container:
       text: Container
       relativeUrl: container.html
+    extending-cargo:
+      text: Extending Cargo
+      relativeUrl: extending-cargo.html
     performance:
       text: Performance
       relativeUrl: performance.html

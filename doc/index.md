@@ -6,27 +6,9 @@ currentMenu: home
 [![Author](https://img.shields.io/badge/author-%40ragboyjr-blue.svg)](https://twitter.com/ragboyjr)
 ![Release](https://img.shields.io/badge/release-v0.3--dev-blue.svg)
 
-Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC and DI by providing a streamlined API designed to be extended. Its feature set and semantics closely follow [Pimple](http://pimple.sensiolabs.org) and the [Laravel Service Container](https://laravel.com/docs/5.5/container); however, its design is more much modular so that it can extended to fit any need.
+Cargo is yet another service container library that strives for simplicity with powerful extensions. It facilitates IoC/DI while providing a streamlined API designed for useability and proper composition.
 
-- [Features](#features)
-- [Installation](#installation)
-- [Basic Usage](#basic-usage)
-- [Container](#container)
-    - [Creating Containers](#creating-containers)
-    - [Defining Services/Values](#defining-services-values)
-    - [Accessing Services/Values](#accessing-services-values)
-    - [Environment Parameters](#environment-parameters)
-    - [Wrapping Services](#wrapping-services)
-    - [Aliases](#aliases)
-- [Auto Wiring](#auto-wiring)
-- [Service Providers](#service-providers)
-- [Performance](#performance)
-    - [Lazy Loading Service Providers](#lazy-loading-service-providers)
-    - [Caching Auto Wired Services](#caching-auto-wired-services)
-- [PSR Utilities](#psr-utilities)
-- [Extending Cargo](/extending-cargo.html)
-- [API](/api.html)
-- [Development](#development)
+Cargo's philosophy is to provide a simple interface and implementation to provide the basic functionality of an IoC container and provide the other amazing features as optional extensions. If you don't want Automatic Dependency Injection or Environment Variable Parameters, you don't have to use them.
 
 ## Features
 
@@ -39,7 +21,6 @@ Cargo is yet another service container library that strives for simplicity with 
 - PSR-11 Compliant
 - Integrates well with Pimple and other PSR-11 containers via the PSR utilities
 - Cycles Detection Container that will catch any circular dependencies and prevent infinite loops!
-- Zero dependencies
 - and so much more!
 
 ## Installation
@@ -60,74 +41,13 @@ $c->add('service.parameter', 'value');
 $c->singleton(AcmeService::class, function($c) {
     return new AcmeService($c['service.parameter']);
 });
-$c->factory(FooService::class); // will be auto instantiated
-
-$acme_service = $c->get(AcmeService::class);
-$foo_service = $c->get(FooService::class);
-```
-
-## Container
-
-### Creating Containers
-
-There are several ways to create cargo containers. The easiest way is to just create the default container like so:
-
-```php
-<?php
-
-use Krak\Cargo;
-
-$c = Cargo\container();
-// same as doing
-$c = new Cargo\Container\BoxContainer();
-```
-
-You can also use the ContainerFactory which is a utility that will decorate and configure the containers to create the feature set you want:
-
-```php
-$c = Cargo\containerFactory()->autoWire()->detectCycles()->env()->create();
-// or
-$c = (new Cargo\ContainerFactory())->autoWire()->detectCycles()->env()->create();
-```
-
-And if you need even more customization, you can always just create the containers youself.
-
-```php
-$unbox = new Cargo\Unbox\ServiceUnbox();
-$unbox = new Cargo\Unbox\EnvUnbox($unbox);
-$c = new Cargo\Container\BoxContainer($unbox);
-$c = new Cargo\Container\DetectCyclesContainer($c);
-```
-
-### Defining Services and Parameters
-
-The container's primary purpose is to store service definitions and subsequently build the defined services.
-
-Services are defined by factory functions which are used to build/create the service. Parameters are simply values stored in the container and will be retrieved as they were defined. Parameters can be useful for configuring the service factory functions.
-
-```php
-$c->add('service', function($container, $parameters) {
-    return new Service($container->get('parameter'));
+$c->factory(FooService::class, function($c) {
+    return new FooService();
 });
-$c->add('parameter', 1);
+
+$acme_service = $c->get(AcmeService::class); // same instance will be returned each time
+$foo_service = $c->get(FooService::class); // new instance will be created each time
 ```
-
-This factory function is not invoked until you try to access the service at a later time. Each service creation function gets passed two values: The container instance, and an array of parameters. You can use both to construct your services any way you need.
-
-To access a service, you can use:
-
-```php
-$c->get('service');
-```
-
-### Accessing the Container
-
-
-### Environment Parameters
-
-### Wrapping Services
-
-### Aliases
 
 ### Auto Wiring
 
