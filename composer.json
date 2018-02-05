@@ -22,6 +22,7 @@
         "lavoiesl/php-benchmark": "^1.4",
         "peridot-php/leo": "^1.6",
         "peridot-php/peridot": "^1.18",
+        "psr/log": "^1.0",
         "symfony/var-dumper": "^3.2"
     },
     "autoload": {
@@ -36,7 +37,6 @@
         }
     },
     "require": {
-        "psr/container": "^1.0",
-        "psr/log": "^1.0"
+        "psr/container": "^1.0"
     }
 }
