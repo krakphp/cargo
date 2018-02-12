@@ -8,6 +8,20 @@ use Krak\Cargo;
 /** Stores values for the containers */
 abstract class AbstractContainer implements Cargo\Container, ArrayAccess
 {
+    private static $methods = [];
+
+    public static function registerContainerMethods(array $methods) {
+        self::$methods = array_merge(self::$methods, $methods);
+    }
+
+    public function __call($method, array $args) {
+        if (!isset(self::$methods[$method])) {
+            throw new \BadMethodCallException('Invalid method: ' . $method);
+        }
+
+        return self::$methods[$method]($this, ...$args);
+    }
+
     public function offsetGet($offset) {
         return $this->get($offset);
     }
@@ -19,34 +33,6 @@ abstract class AbstractContainer implements Cargo\Container, ArrayAccess
     }
     public function offsetExists($offset) {
         return $this->has($offset);
-    }
-
-    public function wrap($id, $wrapper) {
-        return Cargo\wrap($this, $id, $wrapper);
-    }
-    public function replace($id, $value, array $opts = []) {
-        return Cargo\replace($this, $id, $value, $opts);
-    }
-    public function define($id, $value, array $opts = []) {
-        return Cargo\define($this, $id, $value, $opts);
-    }
-    public function protect($id, $value) {
-        return Cargo\protect($this, $id, $value);
-    }
-    public function factory($id, $factory = null) {
-        return Cargo\factory($this, $id, $factory);
-    }
-    public function singleton($id, $service = null) {
-        return Cargo\singleton($this, $id, $service);
-    }
-    public function fill(array $values) {
-        return Cargo\fill($this, $values);
-    }
-    public function alias($id, ...$aliases) {
-        return Cargo\alias($this, $id, ...$aliases);
-    }
-    public function env($var_name, $id = null) {
-        return Cargo\env($this, $var_name, $id);
     }
 
     public function get($id) {

@@ -37,6 +37,8 @@ function autoWireServiceC($a, $b = 1) {
     };
 }
 
+Krak\Cargo\bootstrapContainerMethods();
+
 describe('Compile Auto Wire Services', function() {
     it('returns a compiled structure for auto wire services', function() {
         $c = new BoxContainer();
@@ -180,7 +182,6 @@ describe('Generate Compiled Service Provider', function() {
         $compiled = $compile->compile($c);
         $generate = new GenerateServiceProvider();
         list($class, $contents) = $generate->generateServiceProvider($compiled);
-        echo($contents);
 
         eval(substr($contents, 7));
         $c->register(new $class());

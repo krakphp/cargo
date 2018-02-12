@@ -25,10 +25,6 @@ function optsEnv(array $opts) {
     return isset($opts['env']) && $opts['env'] == true;
 }
 
-function optsAlias(array $opts) {
-    return isset($opts['alias']) && $opts['alias'] == true;
-}
-
 function optsService(array $opts) {
     return isset($opts['service']) && $opts['service'] == true;
 }

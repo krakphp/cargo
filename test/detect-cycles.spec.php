@@ -9,8 +9,9 @@ describe('Detect Cycles Container', function() {
         $c->add('a', function($c) {
             return $c->get('b');
         });
-        Cargo\alias($c, 'a', 'c');
-        Cargo\alias($c, 'c', 'b');
+        $c->add('b', function($c) {
+            return $c->get('a');
+        });
 
         expect(function() use ($c) {
             $c->get('a');

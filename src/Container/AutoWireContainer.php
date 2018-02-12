@@ -5,7 +5,7 @@ namespace Krak\Cargo\Container;
 use Krak\AutoArgs;
 use Krak\Cargo;
 
-class AutoWireContainer extends ContainerDecorator
+final class AutoWireContainer extends ContainerDecorator
 {
     public function make($id, array $params = [], Cargo\Container $c = null) {
         if ($this->container->has($id)) {

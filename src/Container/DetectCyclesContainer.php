@@ -4,7 +4,7 @@ namespace Krak\Cargo\Container;
 
 use Krak\Cargo;
 
-class DetectCyclesContainer extends ContainerDecorator
+final class DetectCyclesContainer extends ContainerDecorator
 {
     private $cycles = [];
 

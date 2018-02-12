@@ -5,7 +5,7 @@ namespace Krak\Cargo\Container;
 use Krak\Cargo;
 use Psr\Log;
 
-class LoggingContainer extends ContainerDecorator
+final class LoggingContainer extends ContainerDecorator
 {
     private $logger;
     private $level;

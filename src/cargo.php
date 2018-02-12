@@ -5,9 +5,6 @@ namespace Krak\Cargo;
 /** Wraps a box instance */
 function wrap(Container $c, $id, $value) {
     $old_box = $c->box($id);
-    if (Container\optsAlias($old_box[1])) {
-        return wrap($c, $old_box[0], $value);
-    }
 
     $c->add($id, $value, array_merge(
         $old_box[1],
@@ -29,9 +26,7 @@ function define(Container $c, $id, $value, array $opts = []) {
 /** Replaces a box. This is the same as add, except it will make sure that any wrapped definitions will stay wrapped */
 function replace(Container $c, $id, $value, array $opts = []) {
     $old_box = $c->box($id);
-    if (Container\optsAlias($old_box[1])) {
-        return replace($c, $old_box[0], $value);
-    }
+
     if (!isset($old_box[1]['wrapped'])) {
         $c->add($id, $value, array_merge($old_box[1], $opts));
         return $c;
@@ -84,6 +79,13 @@ function protect(Container $c, $id, $value) {
     return $c;
 }
 
+/** Merges in array values with values defined in the container */
+function merge(Container $c, $id, array $values) {
+    $orig = $c->get($id);
+    $c->add($id, array_merge($orig, $values));
+    return $c;
+}
+
 function container(array $values = []) {
     $c = new Container\BoxContainer();
     fill($c, $values);
@@ -109,4 +111,34 @@ function buildCachedParams(Container $container, $id, array $params_def, array $
     }
 
     return $params;
+}
+
+function registerContainerMethods(array $methods) {
+    Container\AbstractContainer::registerContainerMethods([
+        'wrap' => wrap::class,
+        'define' => define::class,
+        'replace' => replace::class,
+        'env' => env::class,
+        'factory' => factory::class,
+        'singleton' => singleton::class,
+        'alias' => alias::class,
+        'fill' => fill::class,
+        'protect' => protect::class,
+        'merge' => merge::class,
+    ]);
+}
+
+function bootstrapContainerMethods() {
+    registerContainerMethods([
+        'wrap' => wrap::class,
+        'define' => define::class,
+        'replace' => replace::class,
+        'env' => env::class,
+        'factory' => factory::class,
+        'singleton' => singleton::class,
+        'alias' => alias::class,
+        'fill' => fill::class,
+        'protect' => protect::class,
+        'merge' => merge::class,
+    ]);
 }

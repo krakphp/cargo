@@ -8,6 +8,7 @@ class ContainerFactory
 {
     private $env = false;
     private $auto_wire = null;
+    private $alias = false;
     private $detect_cycles = false;
     private $logger = null;
     private $log_level = null;
@@ -15,6 +16,11 @@ class ContainerFactory
 
     public function autoWire($val = true) {
         $this->auto_wire = $val;
+        return $this;
+    }
+
+    public function alias($val = true) {
+        $this->alias = $val;
         return $this;
     }
 
@@ -54,6 +60,9 @@ class ContainerFactory
         $container = new Container\BoxContainer($unbox);
         if ($this->auto_wire) {
             $container = new Container\AutoWireContainer($container);
+        }
+        if ($this->alias) {
+            $container = new Container\AliasContainer($container);
         }
         if ($this->logger) {
             $container = new Container\LoggingContainer($container, $this->logger, $this->log_level);

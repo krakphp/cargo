@@ -5,11 +5,15 @@ currentMenu: container
 
 - [Creating Containers](#creating-containers)
 - [Boxes](#boxes)
-- [Defining Boxes](#adding-definitions)
-- [Accessing Services/Values](#accessing-services-values)
+- [Accessing the Container](#accessing-the-container)
+- [Singletons](#singletons)
+- [Factory](#factory)
+- [Protected Values](#protected-values)
 - [Environment Parameters](#environment-parameters)
-- [Wrapping Services](#wrapping-services)
 - [Aliases](#aliases)
+- [Wrapping](#wrapping)
+    - [Replacing](#replacing)
+- [Syntactic Sugar](#syntactic-sugar)
 
 ## Creating Containers
 
@@ -84,11 +88,9 @@ $c->add('parameter', 1);
 
 This factory function is not invoked until you try to access the service at a later time. Each service creation function gets passed two values: The container instance, and an array of parameters (we'll talk more about those later). You can use both to construct your services any way you need.
 
-#### Redefining Boxes
-
 To redefine a box, just simply add with the same name and it'll overwrite the previous definition.
 
-### Accessing the Container
+## Accessing the Container
 
 You can access the container in two ways:
 
@@ -108,7 +110,7 @@ $service = $c->make(Acme\Service::class, ['arg1' => 'value']);
 
 Passing arguments to services defined manually don't make a whole lot of sense, but will come into play later when we look at the AutoWiring extension.
 
-### Singletons
+## Singletons
 
 You can define singleton services which are created only one time and any subsequent requests for the same service will return the same exact instance.
 
@@ -120,7 +122,7 @@ Cargo\singleton($c, 'service', function() {
 assert($c->get('service') === $c->get('service'));
 ```
 
-### Factory
+## Factory
 
 You can also define factory services which are created fresh every time for every request for the service.
 
@@ -132,7 +134,7 @@ Cargo\factory($c, 'service', function() {
 assert($c->get('service') !== $c->get('service'));
 ```
 
-### Protected Values
+## Protected Values
 
 There may be times where you want to store callables and *not* have them treated as service definitions. In that case, you can just use `protect`.
 
@@ -142,7 +144,7 @@ Cargo\protect($c, 'value', $myFunc);
 assert($c->get('value') === $myFunc);
 ```
 
-### Environment Parameters
+## Environment Parameters
 
 It's fairly common to want to access environment variables when configuring services. `env` provides a simple way to register env variables that are accessed lazily when the time comes.
 
@@ -158,7 +160,13 @@ Cargo\env($c, 'apiKey', 'API_KEY');
 $c->get('apiKey'); // returns the API_KEY env variable
 ```
 
-### Aliases
+Environment parameters are not enabled by default. They can be added by manually constructing the Unbox with the `EnvUnbox`, or by using the Container factory.
+
+```php
+$c = Cargo\containerFactory()->env()->create();
+```
+
+## Aliases
 
 Cargo let's you define aliases for any defined box. This is very useful for creating shorthand aliases for a longer service name or maybe for backwards compatibility if you want to migrate old usage of a service name to something else.
 
@@ -170,7 +178,13 @@ Cargo\alias($c, 'Doctrine\ORM\EntityManagerInterface', 'Doctrine\Common\Persiste
 $c->get('Doctrine\ORM\EntityManagerInterface') === $c->get('Doctrine\Common\Persistence\ObjectManager') === $c->get('em');
 ```
 
-### Wrapping
+Aliases are not enabled by default. They can be added by manually added via the `AliasContainer` decorator or by the Container factory.
+
+```php
+$c = Cargo\containerFactory()->alias()->create()
+```
+
+## Wrapping
 
 When you need to extend/alter a box, you can do so by wrapping. Wrapping allows you to decorate or configure a service when it has been accessed.
 
@@ -189,7 +203,7 @@ In this instance, when we unboxed `service`, the initial definition was called, 
 
 Also, it's important to note that wrapping follows the same instantiation rules as whatever the service was originally defined as. So, if the box is a singleton, then the wrappers will only be called once, if factory, they will be called on every instantiation.
 
-#### Replacing
+### Replacing
 
 Consider the following code:
 
@@ -224,3 +238,29 @@ assert($c->get('service') instanceof DecoratedService);
 ```
 
 We also provide a helper function `define` which will add the box if it doesn't exist or replace it if it does.
+
+## Syntactic Sugar
+
+Cargo maintains a simple API while allowing powerful abstractions. None of the core cargo functions like `singleton`, `wrap`, `replace`, etc... get any special access to the cargo containers. This means that any of these awesome features in Cargo can be modified or extended in third party customizations. The only downside to this design is that it makes using the Cargo container more cumbersome than if the methods were defined directly on the containers. To mitigate this, we've added the ability to for a more OO interface via Container Methods.
+
+Container methods are registered via:
+
+```php
+Cargo\registerContainerMethods([
+    'singleton' => 'Krak\\Cargo\\singleton',
+]);
+```
+
+Each container method needs to accept a `Krak\Cargo\Container` as it's first parameter, and everything else is just forwarded to the registered method.
+
+Once registered you can access the `singelton` method on the container itself:
+
+```php
+// normal
+Cargo\singleton($c, 'service', function() {});
+
+// with container method
+$c->singleton('service', function() {});
+```
+
+By default, the methods like `singleton`, `env`, `factory`, etc.. are **not registered as container methods**. To register them, you can just call `Krak\Cargo\bootstrapContainerMethods()`.

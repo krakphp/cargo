@@ -10,9 +10,9 @@ class ServiceUnbox implements Cargo\Unbox
     public function unbox($box, Cargo\Container $container, array $params) {
         list($value, $opts) = $box;
 
-        if (Cargo\Container\optsAlias($opts)) {
-            return $container->make($value, $params);
-        }
+        // if (Cargo\Container\optsAlias($opts)) {
+        //     return $container->make($value, $params);
+        // }
 
         if (Cargo\Container\optsValue($opts) || !$value instanceof Closure) {
             return $value;

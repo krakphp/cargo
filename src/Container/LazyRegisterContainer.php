@@ -15,7 +15,7 @@ use Krak\Cargo;
         'Provider2' => []
     ]
 ] */
-class LazyRegisterContainer extends ContainerDecorator
+final class LazyRegisterContainer extends ContainerDecorator
 {
     private $lazy_config;
     private $registered;

@@ -2,6 +2,7 @@
 
 use Krak\Cargo\{
     Container\BoxContainer,
+    Container\AliasContainer,
     Container,
     Unbox,
     Exception\BoxFrozenException
@@ -93,7 +94,7 @@ describe('Box Container', function() {
 });
 describe('alias', function() {
     it('aliases services', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b', 'c');
         $c->add('a', 2);
@@ -101,24 +102,27 @@ describe('alias', function() {
         assert($c->get('a') === $c->get('c'));
     });
     it('can remove aliased services', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b', 'c');
         $c->remove('b');
-        assert(count($c) == 2);
+
+        expect(count($c))->equal(2);
+        $c->add('b', 2);
+        expect($c->get('b'))->equal(2);
     });
     it('shows all aliased values as keys', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b', 'c');
         assert($c->keys(), ['a', 'b', 'c']);
     });
-    it('can allow aliased services to be re-defined', function() {
-        $c = new BoxContainer();
+    it('forwards aliased definitions to the alias', function() {
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b');
         $c->add('b', 2);
-        expect($c->get('a'))->to->equal(1);
+        expect($c->get('a'))->to->equal(2);
         expect($c->get('b'))->to->equal(2);
     });
 });
@@ -135,7 +139,7 @@ describe('wrap', function() {
         assert($c->get('a') == 4);
     });
     it('can wrap aliased services', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b');
         alias($c, 'b', 'c');
@@ -149,9 +153,9 @@ describe('wrap', function() {
             return $val + 3;
         });
 
-        assert($c->get('a') == 7);
-        assert($c->get('b') == 7);
-        assert($c->get('c') == 7);
+        expect($c->get('a'))->equal(7);
+        expect($c->get('b'))->equal(7);
+        expect($c->get('c'))->equal(7);
     });
     it('keeps wrapped factories as factories', function() {
         $c = new BoxContainer();
@@ -173,7 +177,7 @@ describe('replace', function() {
         expect($c->box('a'))->to->equal([2, ['q' => 1, 'r' => 2]]);
     });
     it('can replace an aliased service', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->add('a', 1);
         alias($c, 'a', 'b');
         replace($c, 'b', 2);
@@ -200,7 +204,7 @@ describe('define', function() {
         expect($c->get('a'))->to->equal(1);
     });
     it('will replace a service if already added', function() {
-        $c = new BoxContainer();
+        $c = new AliasContainer(new BoxContainer());
         $c->define('a', 1);
         $c->alias('a', 'b');
         $c->define('b', 2);

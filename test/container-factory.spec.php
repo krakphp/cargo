@@ -2,6 +2,8 @@
 
 use Krak\Cargo;
 
+Krak\Cargo\bootstrapContainerMethods();
+
 describe('Container Factory', function() {
     it('can build a simple container', function() {
         $c = Cargo\containerFactory()->autoWire(false)->create();

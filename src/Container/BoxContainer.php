@@ -7,7 +7,7 @@ use Krak\Cargo\Exception\NotFoundException;
 use Krak\Cargo\Exception\BoxFrozenException;
 
 /** Stores values for the containers */
-class BoxContainer extends AbstractContainer
+final class BoxContainer extends AbstractContainer
 {
     private $boxes;
     private $cached;

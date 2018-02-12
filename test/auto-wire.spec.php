@@ -18,9 +18,11 @@ function serviceB($val = 1) {
     };
 }
 
+Krak\Cargo\bootstrapContainerMethods();
+
 describe('Auto Wire', function() {
     beforeEach(function() {
-        $this->c = Cargo\containerFactory()->autoWire()->create();
+        $this->c = Cargo\containerFactory()->autoWire()->alias()->create();
     });
     it('creates auto-wired entries', function() {
         $this->c->singleton(ServiceA::class);
